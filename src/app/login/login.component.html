@@ -1,0 +1,47 @@
+<ion-content [fullscreen]="true" color="primary">
+    <ion-card>
+        <ion-card-content>
+            <ion-button color="primary" class="ion-float-right" (click)="goBack()">X</ion-button>
+            <ion-item-divider class="ion-padding-bottom">
+                <ion-img src='assets/icon/logo.png' style="width: 80px; margin: 0 auto;"></ion-img>
+            </ion-item-divider>
+            <div class="ion-text-center ion-padding-bottom ion-padding-top">
+                <h3><b>
+                    <ion-label color="primary" *ngIf="phase == 'verify_no'">Mobile Verify</ion-label>
+                    <ion-label color="primary" *ngIf="phase == 'login'">Login</ion-label>
+                    <ion-label color="primary" *ngIf="phase == 'OTP'">OTP Verify</ion-label>
+                    <ion-label color="primary" *ngIf="phase == 'forgotPassword'">Forgot Password</ion-label>
+                    <ion-label color="primary" *ngIf="phase == 'setPassword'">Set Password</ion-label>
+                </b></h3>
+            </div>
+            <ion-item *ngIf="phase == 'verify_no' || phase == 'login' || phase == 'forgotPassword'">
+                <ion-label position="floating">Mobile Number</ion-label>
+                <ion-input type="number" [(ngModel)]="mobileNumber" inputmode="decimal" maxlength="12"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="phase == 'login'">
+                <ion-label position="floating">Password</ion-label>
+                <ion-input type="password" [(ngModel)]="password" inputmode="text" maxlength="50"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="phase == 'OTP'">
+                <ion-label position="floating">Enter OTP</ion-label>
+                <ion-input type="number" [(ngModel)]="OTP" inputmode="decimal" maxlength="12"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="phase == 'setPassword'">
+                <ion-label position="floating">New Password</ion-label>
+                <ion-input type="password" [(ngModel)]="newPassword" inputmode="text" maxlength="50"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="phase == 'setPassword'">
+                <ion-label position="floating">Re-Type Password</ion-label>
+                <ion-input type="password" [(ngModel)]="reNewPassword" inputmode="text" maxlength="50"></ion-input>
+            </ion-item>
+            <p class="ion-padding-top"></p>
+            <ion-button expand="full" color="primary" (click)="verifyMobileNumber()" *ngIf="phase == 'verify_no'">Verify Mobile Number</ion-button>
+            <ion-button expand="full" color="primary" (click)="doLogin()" *ngIf="phase == 'login'">Login</ion-button>
+            <ion-button expand="full" color="primary" (click)="forgotPassword()" *ngIf="phase == 'login'">Forgot Password ?</ion-button>
+            <ion-button expand="full" color="primary" (click)="verfiyOTP()" *ngIf="phase == 'OTP'">Verfiy OTP</ion-button>
+            <ion-button expand="full" color="primary" (click)="resendOTP()" *ngIf="phase == 'OTP'">Re-Send OTP</ion-button>
+            <ion-button expand="full" color="primary" (click)="forgot_password_fbn()" *ngIf="phase == 'forgotPassword'">Confirm forgot password</ion-button>
+            <ion-button expand="full" color="primary" (click)="set_password()" *ngIf="phase == 'setPassword'">Set Password</ion-button>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

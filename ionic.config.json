@@ -1,5 +1,7 @@
 {
   "name": "PTL",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

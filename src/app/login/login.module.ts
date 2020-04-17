@@ -3,21 +3,22 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
-import { HomePage } from './home.page';
+import { LoginComponent } from './login.component';
 
 @NgModule({
+  declarations: [
+    LoginComponent
+  ],
   imports: [
     CommonModule,
-    FormsModule,
     IonicModule,
+    FormsModule,
     RouterModule.forChild([
       {
         path: '',
-        component: HomePage
+        component: LoginComponent
       }
     ])
-  ],
-  declarations: [HomePage]
+  ]
 })
-export class HomePageModule {}
+export class LoginModule { }

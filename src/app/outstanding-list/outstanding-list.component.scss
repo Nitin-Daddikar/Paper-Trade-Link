@@ -1,0 +1,24 @@
+.outTable {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-collapse: collapse;
+}
+
+.primaryBG {
+    background: var(--ion-color-primary);
+    color: white;
+}
+
+th,
+td {
+    border: 1px solid black;
+    text-align: center;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+}

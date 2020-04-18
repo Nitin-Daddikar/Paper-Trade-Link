@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { APIService } from '../services/api.services';
 import { UtilitiesService } from '../services/utilities.services';
+import { NavController } from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -16,24 +18,30 @@ export class LoginComponent {
   reNewPassword: string;
 
   phase = 'verify_no'; // verify_no, login, OTP, forgotPassword, setPassword
-  constructor(private apiService: APIService, private utilitiesService: UtilitiesService, private location: Location) { }
+  constructor(private apiService: APIService, private utilitiesService: UtilitiesService, private location: Location,
+              private navCtrl: NavController, private authService: AuthService) { }
 
   verifyMobileNumber() {
     if (this.mobileNumber) {
+      this.utilitiesService.showLoading();
       this.apiService.get('API_login/get_details/' + this.mobileNumber).subscribe((response: any) => {
         if (response.count >= 1 && response.otp != 'Y' && response.active == 0) {
 
           this.apiService.get('API_login/verify_no/' + this.mobileNumber).subscribe((verifyResponse: any) => {
             if (verifyResponse.count >= 1 && verifyResponse.otp != 'Y') {
               this.phase = 'OTP';
+              this.utilitiesService.dismissLoading();
             }
           });
 
         } else if (response.count >= 1 && response.otp == 'Y' && response.active == 1) {
           this.phase = 'login';
+          this.utilitiesService.dismissLoading();
         } else if (response.password != '' && response.otp == 'Y' && response.active == 1) {
           this.phase = 'forgotPassword';
+          this.utilitiesService.dismissLoading();
         } else if (response.count == '0') {
+          this.utilitiesService.dismissLoading();
           this.utilitiesService.presentErrorAlert('Error', 'Your Mobile Number Is Not Register');
         }
       });
@@ -41,7 +49,9 @@ export class LoginComponent {
   }
 
   verfiyOTP() {
+    this.utilitiesService.showLoading();
     this.apiService.get('API_login/verify_otp/' + this.OTP + '/' + this.mobileNumber).subscribe((verifyResponse: any) => {
+      this.utilitiesService.dismissLoading();
       if (verifyResponse >= 1) {
         this.phase = 'setPassword';
       } else {
@@ -56,6 +66,7 @@ export class LoginComponent {
 
   doLogin() {
     if (this.mobileNumber && this.password && this.password.length >= 0) {
+      this.utilitiesService.showLoading();
       this.apiService.get('API_login/login/' + this.mobileNumber + '/' + this.password).subscribe((response: any) => {
         if (response) {
           let count = 0;
@@ -67,8 +78,12 @@ export class LoginComponent {
             }
           });
 
+          this.utilitiesService.dismissLoading();
           if (count >= 1) {
-            alert('Login Success');
+            this.authService.setMobileNumber = this.mobileNumber;
+            this.authService.setstockAccess = stockAccess;
+            this.authService.UserLoggedIn = true;
+            this.navCtrl.navigateRoot('/nearest-sizes');
           } else {
             this.utilitiesService.presentErrorAlert('Error', 'Please Enter Correct Credentials');
           }
@@ -82,10 +97,12 @@ export class LoginComponent {
   }
 
   forgot_password_fbn() {
+    this.utilitiesService.showLoading();
     this.apiService.get('API_login/verify_no/' + this.mobileNumber).subscribe((verifyResponse: any) => {
       if (verifyResponse.password != ' ') {
         this.phase = 'OTP';
       }
+      this.utilitiesService.dismissLoading();
     });
   }
 

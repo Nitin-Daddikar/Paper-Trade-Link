@@ -1,0 +1,51 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-toggle>
+                <ion-button>
+                    <ion-icon slot="icon-only" name="menu"></ion-icon>
+                </ion-button>
+            </ion-menu-toggle>
+        </ion-buttons>
+        <ion-title start>Cheque Collection</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title color="primary" class="ion-text-center">Cheque Collection</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+            <ion-label>Company Name</ion-label>
+            <ion-item>
+                <ion-select placeholder="Select Company">
+                    <ion-select-option *ngFor="let company of companyList" [value]="company.id">{{company.company_name}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <p class="ion-padding-top"></p>
+            <ion-label>Amount</ion-label>
+            <ion-item>
+                <ion-input type="number" inputmode="decimal" maxlength="10"></ion-input>
+            </ion-item>
+            <p class="ion-padding-top"></p>
+            <ion-label>Remark</ion-label>
+            <ion-item>
+                <ion-textarea value="Please collect cheque from factory"></ion-textarea>
+            </ion-item>
+
+            <ion-grid class="ion-padding-top">
+                <ion-row class="ion-align-items-center">
+                    <ion-col size="6" class="ion-text-center">
+                        <ion-button expand="block" fill="outline">Reset</ion-button>
+                    </ion-col>
+                    <ion-col size="6" class="ion-text-center">
+                        <ion-button expand="block" color="primary"> Submit </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+
+        </ion-card-content>
+    </ion-card>
+</ion-content>

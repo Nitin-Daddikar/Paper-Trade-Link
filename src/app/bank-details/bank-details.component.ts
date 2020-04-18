@@ -14,14 +14,16 @@ export class BankDetailsComponent implements OnInit {
   constructor(private apiService: APIService, private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
-    this.utilitiesService.showLoading();
-    this.apiService.get('API_bank/bank_details').subscribe((bankDetails: any) => {
-      if (bankDetails && bankDetails.bank_details) {
-        this.bankDetails = bankDetails.bank_details;
-      } else {
-        this.utilitiesService.presentErrorAlert();
-      }
-      this.utilitiesService.dismissLoading();
-    });
+    if (this.utilitiesService.isInternatConnectionAvailable()) {
+      this.utilitiesService.showLoading();
+      this.apiService.get('API_bank/bank_details').subscribe((bankDetails: any) => {
+        if (bankDetails && bankDetails.bank_details) {
+          this.bankDetails = bankDetails.bank_details;
+        } else {
+          this.utilitiesService.presentErrorAlert();
+        }
+        this.utilitiesService.dismissLoading();
+      });
+    }
   }
 }

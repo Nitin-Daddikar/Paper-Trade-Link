@@ -1,0 +1,83 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-toggle>
+                <ion-button>
+                    <ion-icon slot="icon-only" name="menu"></ion-icon>
+                </ion-button>
+            </ion-menu-toggle>
+        </ion-buttons>
+        <ion-title start>Outstanding List</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+    <ng-container *ngIf="companyResult && companyResult.length > 0">
+        <ng-container *ngFor="let company of companyResult">
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-subtitle color="primary" class="ion-text-center">Company Name</ion-card-subtitle>
+                    <ion-card-title class="ion-text-center">{{company.company_name}}</ion-card-title>
+                </ion-card-header>
+
+                <ion-card-content>
+                    <div class="container">
+                        <div class="scroll" scrollX="true">
+                            <table class="outTable">
+                                <tr class="primaryBG">
+                                    <th style="min-width: 5.5rem;">Date</th>
+                                    <th style="min-width: 4rem;">Voucher<br>Type</th>
+                                    <th style="min-width: 5.5rem;">Invoice<br>No.</th>
+                                    <th style="min-width: 4rem;">Credit<br>Days</th>
+                                    <th style="min-width: 5.5rem;">Due<br>Date</th>
+                                    <th style="min-width: 4rem;">Over<br>Due</th>
+                                    <th style="min-width: 5.5rem;">Amount</th>
+                                </tr>
+                                <tr *ngFor="let os of company.oustanding" [ngStyle]="{'color' : os.red == 'YES' ? 'red' : 'green'}">
+                                    <td>{{os.Date_chall}}</td>
+                                    <td>{{os.voucher_type}}</td>
+                                    <td>{{os.voucher_no}}</td>
+                                    <td>{{os.credit_days}}</td>
+                                    <td>{{os.due_date}}</td>
+                                    <td>{{os.days * -1}}</td>
+                                    <td>{{os.balance}}</td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Total</th>
+                                    <th></th>
+                                    <th>{{company.total}}</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="ion-text-center ion-padding-bottom ion-padding-top">
+                        <h2 style="color: black;">Summary Total</h2>
+                    </div>
+
+                    <table class="summary-table">
+                        <tr class="primaryBG">
+                            <th style="min-width: 25%">Monthly</th>
+                            <th style="min-width: 25%">Due</th>
+                            <th style="min-width: 25%">Not Due</th>
+                            <th style="min-width: 25%">Amount</th>
+                        </tr>
+                        <tr *ngFor="let summar of company.summary">
+                            <td>{{summar.Month}}</td>
+                            <td style="color:red">{{summar.Due}}</td>
+                            <td style="color:green">{{summar.Notdue}}</td>
+                            <td>{{summar.Total_summ}}</td>
+                        </tr>
+                    </table>
+
+                </ion-card-content>
+            </ion-card>
+        </ng-container>
+    </ng-container>
+
+</ion-content>

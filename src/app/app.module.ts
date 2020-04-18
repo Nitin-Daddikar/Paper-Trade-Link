@@ -13,8 +13,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { APIService } from './services/api.services';
 import { UtilitiesService } from './services/utilities.services';
-import { TranslatePipe } from './services/translate.service';
 import { SharedModule } from './services/shared.module';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,7 @@ import { SharedModule } from './services/shared.module';
     SplashScreen,
     APIService,
     UtilitiesService,
-    TranslatePipe,
+    AuthService,
     Network,
     NativeStorage
   ],

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Network } from '@ionic-native/network/ngx';
-import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { ToastController, AlertController, LoadingController } from '@ionic/angular';
 
 @Injectable({
@@ -18,7 +17,7 @@ export class UtilitiesService {
   labels = null;
 
   constructor(private network: Network, private toastCtrl: ToastController, private alertCtrl: AlertController,
-              private storage: NativeStorage, private loadingCtrl: LoadingController) { }
+              private loadingCtrl: LoadingController) { }
 
   setLabels(labels) {
     this.labels = labels;
@@ -88,14 +87,6 @@ export class UtilitiesService {
           clearInterval(interval);
       }
     }, 500);
-  }
-
-  clearUserData() {
-    this.storage.remove('user-isLoggedIn');
-    this.storage.remove('user-token');
-    this.storage.remove('user-data');
-    this.storage.remove('clientFilters');
-    this.storage.remove('taskFilters');
   }
 
   async presentErrorAlert(header?, subHeader?) {

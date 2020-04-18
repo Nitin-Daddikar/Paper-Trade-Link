@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { TranslatePipe } from '../services/translate.service';
+import { TranslatePipe } from './translate.pipe';
 
 const EXPORTS = [
     TranslatePipe

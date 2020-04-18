@@ -10,29 +10,49 @@
         <ion-content>
             <ion-list>
                 <ion-menu-toggle auto-hide="true">
-                    <ion-item routerLink="/paper-weight-calc">
-                        <ion-icon name="calculator" slot="start"></ion-icon>
-                        <ion-label>Paper Weight Calculator</ion-label>
-                    </ion-item>
-                    <ion-item routerLink="/bank-details">
-                        <ion-icon name="bookmark" slot="start"></ion-icon>
-                        <ion-label>Bank Details</ion-label>
-                    </ion-item>
                     <ion-item>
                         <ion-icon name="notifications-outline" slot="start"></ion-icon>
-                        <ion-label>Notifications</ion-label>
+                        <ion-label>Broadcast</ion-label>
+                    </ion-item>
+                    <ion-item *ngIf="isUserLoggedIn" routerLink="/nearest-sizes">
+                        <ion-icon name="clipboard-outline" slot="start"></ion-icon>
+                        <ion-label>Find Nearest Size</ion-label>
+                    </ion-item>
+                    <ion-item *ngIf="isUserLoggedIn" routerLink="/order-status">
+                        <ion-icon name="clipboard-outline" slot="start"></ion-icon>
+                        <ion-label>Order Status</ion-label>
+                    </ion-item>
+                    <ion-item *ngIf="isUserLoggedIn" routerLink="/outstanding-list">
+                        <ion-icon name="clipboard-outline" slot="start"></ion-icon>
+                        <ion-label>Outstanding List</ion-label>
+                    </ion-item>
+                    <ion-item *ngIf="isUserLoggedIn" routerLink="/cheque-collection">
+                        <ion-icon name="cash-outline" slot="start"></ion-icon>
+                        <ion-label>Colleaction of Cheque</ion-label>
+                    </ion-item>
+                    <ion-item routerLink="/bank-details">
+                        <ion-icon name="bookmark-outline" slot="start"></ion-icon>
+                        <ion-label>Bank Details</ion-label>
+                    </ion-item>
+                    <ion-item routerLink="/paper-weight-calc">
+                        <ion-icon name="calculator-outline" slot="start"></ion-icon>
+                        <ion-label>Paper Weight Calculator</ion-label>
                     </ion-item>
                     <ion-item (click)="openFeedback()">
-                        <ion-icon name="mail" slot="start"></ion-icon>
+                        <ion-icon name="mail-outline" slot="start"></ion-icon>
                         <ion-label>Feedback</ion-label>
                     </ion-item>
                     <ion-item routerLink="/contact-us">
                         <ion-icon name="phone-portrait-outline" slot="start"></ion-icon>
                         <ion-label>Contact Us</ion-label>
                     </ion-item>
-                    <ion-item routerLink="/login">
-                        <ion-icon name="log-in" slot="start"></ion-icon>
+                    <ion-item *ngIf="!isUserLoggedIn" routerLink="/login">
+                        <ion-icon name="log-in-outline" slot="start"></ion-icon>
                         <ion-label>Login</ion-label>
+                    </ion-item>
+                    <ion-item *ngIf="isUserLoggedIn" (click)="logout()">
+                        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+                        <ion-label>Logout</ion-label>
                     </ion-item>
                 </ion-menu-toggle>
             </ion-list>

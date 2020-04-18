@@ -1,0 +1,8 @@
+.primaryBG {
+    background: var(--ion-color-primary);
+    color: white;
+}
+
+::ng-deep .resultTable ion-col {
+    border: 1px solid black;
+}

@@ -1,0 +1,53 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-toggle>
+                <ion-button>
+                    <ion-icon slot="icon-only" name="menu"></ion-icon>
+                </ion-button>
+            </ion-menu-toggle>
+        </ion-buttons>
+        <ion-title start>Order Status List</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle color="primary" class="ion-text-center">Only Last 30 days transaction will be displayed<br>To track delivery status of the order</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+            <ion-item-divider class="ion-padding-bottom">
+                <ion-grid *ngIf="mobileNumber">
+                    <ion-row class="ion-align-items-center">
+                        <ion-col size="12" class="ion-text-center">
+                            <ion-icon name="call" color="success" class="font2-5" (click)="callNumber()"></ion-icon>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item-divider>
+            <ion-list>
+                <ion-item *ngFor="let order of ordersList">
+                    <ion-grid>
+                        <ion-row (click)="openOrder(order)">
+                            <ion-col size="3">
+                                <ion-img *ngIf="order.status != 'PENDING'" src='assets/icon/delivered.png' class="horizontal-center"></ion-img>
+                                <ion-img *ngIf="order.status == 'PENDING'" src='assets/icon/pending.png' class="horizontal-center"></ion-img>
+                            </ion-col>
+                            <ion-col size="9">
+                                <ion-label><b>Order No : </b>{{order.challan_no}}</ion-label>
+                                <ion-label><b>Date : </b>{{order.Date_challan}}</ion-label>
+                                <ion-label><b>Delivery at : </b>{{order.delivery_at}}</ion-label>
+                                <ion-label><b>Status : </b><span [ngClass]="order.status == 'PENDING' ? 'dangerColor' : 'successColor'">{{order.status}}</span></ion-label>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-item>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

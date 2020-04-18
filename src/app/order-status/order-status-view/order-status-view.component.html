@@ -1,0 +1,83 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-toggle>
+                <ion-button>
+                    <ion-icon slot="icon-only" name="menu"></ion-icon>
+                </ion-button>
+            </ion-menu-toggle>
+        </ion-buttons>
+        <ion-title start>Order Details</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title color="primary" class="ion-text-center">Order Details</ion-card-title>
+        </ion-card-header>
+
+        <ng-container *ngIf="ordersDetailsList && ordersDetailsList.length > 0">
+            <ion-card-content>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="2">
+                            <ion-label><b>Date</b></ion-label>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-label>: {{ordersDetailsList[0].Date_challan}}</ion-label>
+                        </ion-col>
+                        <ion-col size="3">
+                            <ion-label><b>Challan No</b></ion-label>
+                        </ion-col>
+                        <ion-col size="3">
+                            <ion-label>: {{ordersDetailsList[0].challan_no}}</ion-label>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+
+                <ion-grid class="resultTable ion-padding-bottom ion-padding-top">
+                    <ion-row>
+                        <ion-col size="3" class="primaryBG ion-text-center">Quality</ion-col>
+                        <ion-col size="3" class="primaryBG ion-text-center">Size in INCH</ion-col>
+                        <ion-col size="3" class="primaryBG ion-text-center">GSM</ion-col>
+                        <ion-col size="3" class="primaryBG ion-text-center">No of sheets</ion-col>
+                    </ion-row>
+                    <ion-row *ngFor="let order of ordersDetailsList">
+                        <ion-col size="3" class="ion-text-center">{{order.quality}}</ion-col>
+                        <ion-col size="3" class="ion-text-center">{{order.size_inch_length}} X {{order.size_inch_width}}</ion-col>
+                        <ion-col size="3" class="ion-text-center">{{order.gsm}}</ion-col>
+                        <ion-col size="3" class="ion-text-center">{{order.sheets}}</ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="6">
+                            <ion-label><b>Delivery At</b></ion-label>
+                        </ion-col>
+                        <ion-col size="6">
+                            <ion-label>: {{ordersDetailsList[0].delivery_at}}</ion-label>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="6">
+                            <ion-label><b>Status</b></ion-label>
+                        </ion-col>
+                        <ion-col size="6">
+                            <ion-label [color]="ordersDetailsList[0].status == 'PENDING' ? 'danger' : 'success'">: <b>{{ordersDetailsList[0].status}}</b></ion-label>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+
+                <ion-grid *ngIf="mobileNumber" class="ion-padding-top">
+                    <ion-row class="ion-align-items-center">
+                        <ion-label color="primary" class="ion-text-center" style="width:100%;"><b>To track delivery status of the order</b></ion-label>
+                        <ion-col size="12" class="ion-text-center">
+                            <ion-icon name="call" color="success" class="font2-5" (click)="callNumber()"></ion-icon>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+        </ng-container>
+    </ion-card>
+</ion-content>

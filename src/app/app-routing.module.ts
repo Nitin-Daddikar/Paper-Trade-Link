@@ -14,6 +14,18 @@ const routes: Routes = [
   },
   { path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginModule)
+  },
+  { path: 'nearest-sizes',
+    loadChildren: () => import('./nearest-sizes/nearest-sizes.module').then( m => m.NearestSizesModule)
+  },
+  { path: 'order-status',
+    loadChildren: () => import('./order-status/order-status.module').then( m => m.OrderStatusModule)
+  },
+  { path: 'outstanding-list',
+    loadChildren: () => import('./outstanding-list/outstanding-list.module').then( m => m.OutstandingListModule)
+  },
+  { path: 'cheque-collection',
+    loadChildren: () => import('./cheque-collection/cheque-collection.module').then( m => m.ChequeCollectionModule)
   }
 ];
 

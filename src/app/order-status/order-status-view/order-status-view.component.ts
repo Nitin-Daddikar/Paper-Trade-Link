@@ -41,6 +41,6 @@ export class OrderStatusViewComponent implements OnInit {
   }
 
   callNumber() {
-    window.open('tel:' + this.mobileNumber, '_system', 'location=yes')
+    window.open('tel:' + this.mobileNumber, '_system');
   }
 }

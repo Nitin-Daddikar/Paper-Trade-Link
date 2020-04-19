@@ -45,6 +45,10 @@ export class UtilitiesService {
   }
 
   isInternatConnectionAvailable() {
+    if (this.isCordovaAvailable) {
+      return true;
+    }
+
     let isInternetPresent = false;
     if (this.network !== undefined && this.network != null && this.network.type !== undefined && this.network.type !== null) {
       isInternetPresent = this.network.type.toLowerCase() !== 'none';
@@ -57,6 +61,16 @@ export class UtilitiesService {
     }
 
     return isInternetPresent;
+  }
+
+  async showToast(message, duration = 2000) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration,
+      position: 'bottom'
+    });
+
+    return await toast.present();
   }
 
   async showNoInternetToast() {

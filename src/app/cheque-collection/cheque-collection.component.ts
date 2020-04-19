@@ -12,6 +12,9 @@ import * as _ from 'lodash';
 export class ChequeCollectionComponent implements OnInit {
 
   companyList = [];
+  companyName = '';
+  amount;
+  remark = 'Please collect cheque from factory';
 
   constructor(private utilitiesService: UtilitiesService, private apiService: APIService,
               private authService: AuthService) { }
@@ -29,9 +32,45 @@ export class ChequeCollectionComponent implements OnInit {
         this.companyList = response;
         this.utilitiesService.dismissLoading();
       }, () => {
-        this.utilitiesService.presentErrorAlert();
         this.utilitiesService.dismissLoading();
+        this.utilitiesService.presentErrorAlert();
       });
     }
+  }
+
+  submitCollection() {
+    if (this.utilitiesService.isInternatConnectionAvailable()) {
+      if (this.companyName && this.companyName != '' && this.companyName.length > 0 && this.amount && this.amount > 0) {
+        const mobNumber = this.authService.getMobileNumber;
+        const chequeParam = {
+          company_name: this.companyName,
+          mobile: mobNumber,
+          amount: this.amount,
+          remark: this.remark
+        };
+
+        this.utilitiesService.showLoading();
+        this.apiService.post('API_Cheque_collect/collect_cheque', chequeParam).subscribe((res) => {
+          this.utilitiesService.dismissLoading();
+          if (res && res['mobile']) {
+            this.utilitiesService.presentErrorAlert('Success', 'Cheque collection submitted successfully.');
+            this.resetForm();
+          } else {
+            this.utilitiesService.presentErrorAlert('Oops !', 'Cheque collection is failed. Try again.');
+          }
+        }, () => {
+          this.utilitiesService.dismissLoading();
+          this.utilitiesService.presentErrorAlert();
+        });
+      } else {
+        this.utilitiesService.presentErrorAlert('Alert', 'Please enter all mandatory fields.');
+      }
+    }
+  }
+
+  resetForm() {
+    this.companyName = '';
+    this.amount = null;
+    this.remark = '';
   }
 }

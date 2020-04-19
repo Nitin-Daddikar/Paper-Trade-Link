@@ -36,6 +36,14 @@
                         </ion-item>
                     </ion-col>
                 </ion-row>
+                <ion-row>
+                    <ion-col size="4" offset="4">
+                        <ion-item>
+                            <ion-label position="stacked" class="font1">GSM</ion-label>
+                            <ion-input type="number" [(ngModel)]="gsm" inputmode="decimal" maxlength="10"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
                 <ion-row class="ion-align-items-center">
                     <ion-col size="12" class="ion-text-center">
                         <ion-button shape="round" (click)="search()">

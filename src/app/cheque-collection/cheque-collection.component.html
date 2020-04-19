@@ -18,30 +18,30 @@
         </ion-card-header>
 
         <ion-card-content>
-            <ion-label>Company Name</ion-label>
+            <ion-label>Company Name <span class="dangerColor font1-2">*</span></ion-label>
             <ion-item>
-                <ion-select placeholder="Select Company">
-                    <ion-select-option *ngFor="let company of companyList" [value]="company.id">{{company.company_name}}</ion-select-option>
+                <ion-select placeholder="Select Company" [(ngModel)]="companyName">
+                    <ion-select-option *ngFor="let company of companyList" [value]="company.company_name">{{company.company_name}}</ion-select-option>
                 </ion-select>
             </ion-item>
             <p class="ion-padding-top"></p>
-            <ion-label>Amount</ion-label>
+            <ion-label>Amount <span class="dangerColor font1-2">*</span></ion-label>
             <ion-item>
-                <ion-input type="number" inputmode="decimal" maxlength="10"></ion-input>
+                <ion-input type="number" inputmode="decimal" maxlength="10" [(ngModel)]="amount"></ion-input>
             </ion-item>
             <p class="ion-padding-top"></p>
             <ion-label>Remark</ion-label>
             <ion-item>
-                <ion-textarea value="Please collect cheque from factory"></ion-textarea>
+                <ion-textarea [(ngModel)]="remark"></ion-textarea>
             </ion-item>
 
             <ion-grid class="ion-padding-top">
                 <ion-row class="ion-align-items-center">
                     <ion-col size="6" class="ion-text-center">
-                        <ion-button expand="block" fill="outline">Reset</ion-button>
+                        <ion-button expand="block" fill="outline" (click)="resetForm()">Reset</ion-button>
                     </ion-col>
                     <ion-col size="6" class="ion-text-center">
-                        <ion-button expand="block" color="primary"> Submit </ion-button>
+                        <ion-button expand="block" color="primary" (click)="submitCollection()"> Submit </ion-button>
                     </ion-col>
                 </ion-row>
             </ion-grid>

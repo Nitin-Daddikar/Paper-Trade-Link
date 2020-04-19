@@ -16,4 +16,8 @@ export class APIService {
     return this.httpClient.get(this.apiUrl + url);
   }
 
+  post(url, param) {
+    return this.httpClient.post(this.apiUrl + url, param);
+  }
+
 }

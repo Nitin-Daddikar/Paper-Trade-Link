@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { UtilitiesService } from '../services/utilities.services';
 import { APIService } from '../services/api.services';
 import { AuthService } from '../services/auth.service';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'app-outstanding-list',

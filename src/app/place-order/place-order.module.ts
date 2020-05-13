@@ -3,24 +3,22 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ContactUsComponent } from './contact-us.component';
-import { SharedModule } from '../services/shared.module';
+import { PlaceOrderComponent } from './place-order.component';
 
 @NgModule({
   declarations: [
-    ContactUsComponent
+    PlaceOrderComponent
   ],
   imports: [
     CommonModule,
     IonicModule,
     FormsModule,
-    SharedModule,
     RouterModule.forChild([
       {
-        path: '',
-        component: ContactUsComponent
+        path: ':id',
+        component: PlaceOrderComponent
       }
     ])
   ]
 })
-export class ContactUsModule { }
+export class PlaceOrderModule { }

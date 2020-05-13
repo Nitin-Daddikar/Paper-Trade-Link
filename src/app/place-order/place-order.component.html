@@ -1,0 +1,95 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-toggle>
+                <ion-button>
+                    <ion-icon slot="icon-only" name="menu"></ion-icon>
+                </ion-button>
+            </ion-menu-toggle>
+        </ion-buttons>
+        <ion-title start>Place New Order</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title color="primary" class="ion-text-center">Place New Order</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+            <ion-label>Company Name <span class="dangerColor font1-2">*</span></ion-label>
+            <ion-item>
+                <ion-select placeholder="Select Company" [(ngModel)]="companyName">
+                    <ion-select-option *ngFor="let company of companyList" [value]="company.company_name">{{company.company_name}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+
+            <p class="ion-padding-top"></p>
+
+            <ion-label>Quality</ion-label>
+            <ion-item>
+                <ion-input maxlength="100" [(ngModel)]="quality"></ion-input>
+            </ion-item>
+
+            <p class="ion-padding-top w100 floatL"></p>
+
+            <div class="w100 floatL">
+                <div style="width: 40%; float: left;">
+                    <ion-label>Length <span class="dangerColor font1-2">*</span></ion-label>
+                    <ion-item>
+                        <ion-input type="number" [(ngModel)]="length" inputmode="decimal" maxlength="10"></ion-input>
+                    </ion-item>
+                </div>
+                <div style="width: 20%; float: left; text-align: center; height: 65px;" class="vertical-center">
+                    <ion-label color="primary" class="w100">X</ion-label>
+                </div>
+                <div style="width: 40%; float: left;">
+                    <ion-label>Width <span class="dangerColor font1-2">*</span></ion-label>
+                    <ion-item>
+                        <ion-input type="number" [(ngModel)]="width" inputmode="decimal" maxlength="10"></ion-input>
+                    </ion-item>
+                </div>
+            </div>
+
+            <p class="ion-padding-top w100 floatL"></p>
+
+            <div class=" w100 floatL">
+                <div style="width: 40%; float: left;">
+                    <ion-label>GSM <span class="dangerColor font1-2">*</span></ion-label>
+                    <ion-item>
+                        <ion-input type="number" [(ngModel)]="gsm" inputmode="decimal" maxlength="10"></ion-input>
+                    </ion-item>
+                </div>
+                <div style="width: 20%; float: left; text-align: center; height: 65px;" class="vertical-center">
+                    <ion-label style="visibility: hidden;">X</ion-label>
+                </div>
+                <div style="width: 40%; float: left;">
+                    <ion-label>No. of sheets</ion-label>
+                    <ion-item>
+                        <ion-input type="number" [(ngModel)]="noOfSheet" inputmode="decimal" maxlength="10"></ion-input>
+                    </ion-item>
+                </div>
+            </div>
+
+            <p class="ion-padding-top w100 floatL"></p>
+
+            <ion-label>Delivery at</ion-label>
+            <ion-item>
+                <ion-input maxlength="100" [(ngModel)]="delivery"></ion-input>
+            </ion-item>
+
+            <ion-grid class="ion-padding-top">
+                <ion-row class="ion-align-items-center">
+                    <ion-col size="6" class="ion-text-center">
+                        <ion-button expand="block" fill="outline" (click)="resetForm()">Reset</ion-button>
+                    </ion-col>
+                    <ion-col size="6" class="ion-text-center">
+                        <ion-button expand="block" color="primary" (click)="submitOrder()"> Submit </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+
+        </ion-card-content>
+    </ion-card>
+</ion-content>

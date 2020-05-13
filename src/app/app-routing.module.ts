@@ -26,6 +26,12 @@ const routes: Routes = [
   },
   { path: 'cheque-collection',
     loadChildren: () => import('./cheque-collection/cheque-collection.module').then( m => m.ChequeCollectionModule)
+  },
+  { path: 'broadcast-list',
+    loadChildren: () => import('./broadcast-list/broadcast-list.module').then( m => m.BroadCastListModule)
+  },
+  { path: 'place-order',
+    loadChildren: () => import('./place-order/place-order.module').then( m => m.PlaceOrderModule)
   }
 ];
 

@@ -8,6 +8,7 @@ import { APIService } from './services/api.services';
 import { UtilitiesService } from './services/utilities.services';
 import { AuthService } from './services/auth.service';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { AppVersion } from '@ionic-native/app-version/ngx';
 import { Router, NavigationStart } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
@@ -17,13 +18,6 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-
-  // set up hardware back button event.
-  lastTimeBackPress = 0;
-  timePeriodToExit = 2000;
-  firstTime = false;
-
-  @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
 
   constructor(
     private platform: Platform,
@@ -39,6 +33,7 @@ export class AppComponent {
     private actionSheetCtrl: ActionSheetController,
     private popoverCtrl: PopoverController,
     private router: Router,
+    private appVersion: AppVersion
   ) {
     this.initializeApp();
 
@@ -49,9 +44,28 @@ export class AppComponent {
     this.backButtonEvent();
   }
 
+  get isUserLoggedIn() {
+    return this.authService.isUserLoggedIn;
+  }
+
+  // set up hardware back button event.
+  lastTimeBackPress = 0;
+  timePeriodToExit = 2000;
+  firstTime = false;
+  currentVersionNo = null;
+  totalOutstandingAmount = null;
+  URLToOpen = '';
+
+  @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
+
   initializeApp() {
     this.platform.ready().then(() => {
       this.getLabels();
+      this.oneSignalInIt();
+      this.getAppVersion();
+      this.utilitiesService.calculateOutstadingAmount.subscribe(res => {
+        this.calculateOutstadingAmount();
+      });
     });
   }
 
@@ -120,35 +134,88 @@ export class AppComponent {
           mobileNumber => {
             if (mobileNumber) {
               this.authService.setMobileNumber = mobileNumber;
-              this.storage.getItem('stockAccess').then(
-                stockAccess => {
-                  this.authService.setstockAccess = stockAccess;
-                  this.storage.getItem('isLoggedIn').then(
-                    isLoggedIn => {
-                      this.authService.UserLoggedIn = isLoggedIn;
-                      this.statusBar.styleDefault();
-                      this.splashScreen.hide();
-                    }
-                  );
-                }
+              this.storage.getItem('isLoggedIn').then(
+                isLoggedIn => {
+                  this.authService.UserLoggedIn = isLoggedIn ? isLoggedIn : false;
+                  this.hideSplashScreen();
+                },
+                () => this.hideSplashScreen()
               );
+            } else {
+              this.hideSplashScreen();
             }
-          }
+          },
+          () => this.hideSplashScreen()
         );
       } else {
         // Nitin temp
-        // this.authService.setMobileNumber = '9699814688';
-        // this.authService.setstockAccess = 0;
-        // this.authService.UserLoggedIn = true;
-        // this.statusBar.styleDefault();
-        // this.splashScreen.hide();
+        this.authService.setMobileNumber = '9699814688';
+        this.authService.UserLoggedIn = true;
+        this.hideSplashScreen();
       }
 
     });
   }
 
-  get isUserLoggedIn() {
-    return this.authService.isUserLoggedIn;
+  hideSplashScreen() {
+    if (this.URLToOpen !== '') {
+      this.navCtrl.navigateRoot(this.URLToOpen);
+    }
+    this.statusBar.styleDefault();
+    this.splashScreen.hide();
+    this.calculateOutstadingAmount();
+  }
+
+  oneSignalInIt() {
+    if (this.utilitiesService.isCordovaAvailable()) {
+      try {
+        // clarus.nitin - '7f98b411-2697-4e66-9b79-3711e2d33396', '266760528438'
+        // mohit - 'd5689a9a-30c3-487b-bbae-684ea1c61d4d', '305260425877'
+        window['plugins'].OneSignal.startInit('d5689a9a-30c3-487b-bbae-684ea1c61d4d', '305260425877')
+         .inFocusDisplaying(window['plugins'].OneSignal.OSInFocusDisplayOption.Notification)
+         .handleNotificationOpened(this.onPushOpened)
+         .endInit();
+      } catch (err) {
+      }
+    }
+  }
+
+  onPushOpened = function(receivedData) {
+    if (receivedData.action && receivedData.action.actionID === 'order_now') {
+      const data = receivedData.notification.payload.additionalData;
+      this.URLToOpen = `/nearest-sizes/${data.height}/${data.width}/${data.gsm}`;
+    } else {
+      this.URLToOpen = '/broadcast-list';
+    }
+  }.bind(this);
+
+  getAppVersion() {
+    if (this.utilitiesService.isCordovaAvailable()) {
+      this.appVersion.getVersionNumber().then(currentVersionNo => {
+        this.currentVersionNo = currentVersionNo;
+      });
+    }
+  }
+
+  calculateOutstadingAmount() {
+    this.totalOutstandingAmount = null;
+    if (this.isUserLoggedIn) {
+      const mobNumber = this.authService.getMobileNumber;
+      this.apiService.get('API_outstand/company/' + mobNumber).subscribe((response: any) => {
+        if (response && response.length > 0) {
+          let totalAmount = 0;
+          response.forEach(company => {
+            if (company.summary && company.summary.length > 0) {
+              const summary = company.summary;
+              totalAmount += +summary[summary.length-1].Total_summ;
+            }
+          });
+          if (totalAmount > 0) {
+            this.totalOutstandingAmount = totalAmount;
+          }
+        }
+      });
+    }
   }
 
   openFeedback() {

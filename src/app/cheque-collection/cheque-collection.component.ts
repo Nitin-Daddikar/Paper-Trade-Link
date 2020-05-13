@@ -14,7 +14,7 @@ export class ChequeCollectionComponent implements OnInit {
   companyList = [];
   companyName = '';
   amount;
-  remark = 'Please collect cheque from factory';
+  remark = 'Please collect cheque from';
 
   constructor(private utilitiesService: UtilitiesService, private apiService: APIService,
               private authService: AuthService) { }

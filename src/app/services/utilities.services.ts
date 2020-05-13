@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Network } from '@ionic-native/network/ngx';
 import { ToastController, AlertController, LoadingController } from '@ionic/angular';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class UtilitiesService {
     subHeader : 'Something went wrong. Contact your administrator.'
   };
   labels = null;
+  calculateOutstadingAmount = new Subject<any>();
 
   constructor(private network: Network, private toastCtrl: ToastController, private alertCtrl: AlertController,
               private loadingCtrl: LoadingController) { }

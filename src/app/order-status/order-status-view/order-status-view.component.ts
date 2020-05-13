@@ -16,16 +16,16 @@ export class OrderStatusViewComponent implements OnInit {
   mobileNumber;
 
   constructor(private utilitiesService: UtilitiesService, private apiService: APIService,
-              private authService: AuthService, private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
       this.orderId = params.get('orderId');
-      this.getAcrionCallNumber();
+      this.getActionCallNumber();
     });
   }
 
-  getAcrionCallNumber() {
+  getActionCallNumber() {
     this.utilitiesService.showLoading();
     this.apiService.get('API_status/onactioncall').subscribe((response: any) => {
       this.mobileNumber = response;

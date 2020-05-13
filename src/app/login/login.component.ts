@@ -133,44 +133,54 @@ export class LoginComponent {
             this.askSIMPermission();
           }
         },
-        () => this.proceedLogin()
+        () => this.getOneSignalIDs()
       );
     } else {
-      this.proceedLogin();
+      this.getOneSignalIDs();
     }
   }
 
   askSIMPermission() {
     this.sim.requestReadPermission().then(
       () => this.getSimInfo(),
-      () => this.proceedLogin()
+      () => this.getOneSignalIDs()
     );
   }
 
   getSimInfo() {
     this.sim.getSimInfo().then(
       (simInfo) => {
-        this.proceedLogin(simInfo);
+        this.getOneSignalIDs(simInfo);
       },
-      () => this.proceedLogin()
+      () => this.getOneSignalIDs()
     );
   }
 
-  proceedLogin(mobileInfo: any = 'Rights not given') {
+  getOneSignalIDs(mobileInfo = 'Rights not given') {
+    if (this.utilitiesService.isCordovaAvailable()) {
+      window["plugins"].OneSignal.getIds(function(data) {
+        this.proceedLogin(mobileInfo, data.userId, data.pushToken);
+      }.bind(this));
+    } else {
+      this.proceedLogin(mobileInfo);
+    }
+  }
+
+  proceedLogin(mobileInfo, userId = null, pushToken = null) {
     this.utilitiesService.showLoading();
 
     const formData = new FormData();
     formData.append('mobile', this.mobileNumber + '');
     formData.append('password', this.password);
     formData.append('mobile_info', JSON.stringify(mobileInfo));
+    formData.append('oneSignalUserId', userId);
+    formData.append('oneSignalTokenId', pushToken);
 
     this.apiService.post('API_login/login_new', formData).subscribe((response: any) => {
       if (response) {
         let count = 0;
-        let stockAccess = 1;
         response.forEach(res => {
           if (res.company_name != '') {
-            stockAccess = res.stock_active;
             count++;
           }
         });
@@ -178,8 +188,8 @@ export class LoginComponent {
         this.utilitiesService.dismissLoading();
         if (count >= 1) {
           this.authService.setMobileNumber = this.mobileNumber;
-          this.authService.setstockAccess = stockAccess;
           this.authService.UserLoggedIn = true;
+          this.utilitiesService.calculateOutstadingAmount.next();
           this.navCtrl.navigateRoot('/nearest-sizes');
         } else {
           this.utilitiesService.presentErrorAlert('Error', 'Please Enter Correct Credentials');

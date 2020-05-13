@@ -17,6 +17,10 @@ import { NearestSizesComponent } from './nearest-sizes.component';
       {
         path: '',
         component: NearestSizesComponent
+      },
+      {
+        path: ':length/:width/:gsm',
+        component: NearestSizesComponent
       }
     ])
   ]

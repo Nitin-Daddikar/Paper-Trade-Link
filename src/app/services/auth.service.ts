@@ -8,7 +8,6 @@ export class AuthService {
 
     private isLoggedIn = false;
     private mobileNumber: any = '';
-    private stockAccess: any = 0;
 
     constructor(private storage: NativeStorage) { }
 
@@ -17,7 +16,6 @@ export class AuthService {
         if (loggedIn) {
             this.storage.setItem('isLoggedIn', this.isLoggedIn);
             this.storage.setItem('mobileNumber', this.mobileNumber);
-            this.storage.setItem('stockAccess', this.stockAccess);
         }
     }
 
@@ -33,21 +31,11 @@ export class AuthService {
         return this.mobileNumber;
     }
 
-    set setstockAccess(stockAccess) {
-        this.stockAccess = stockAccess;
-    }
-
-    get getstockAccess() {
-        return this.stockAccess;
-    }
-
     logOutUser() {
       this.UserLoggedIn = false;
       this.mobileNumber = '';
-      this.stockAccess = 0;
       this.storage.remove('isLoggedIn');
       this.storage.remove('mobileNumber');
-      this.storage.remove('stockAccess');
     }
 
 }

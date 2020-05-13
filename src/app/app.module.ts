@@ -9,6 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Sim } from '@ionic-native/sim/ngx';
+import { AppVersion } from '@ionic-native/app-version/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -37,7 +38,8 @@ import { AuthService } from './services/auth.service';
     AuthService,
     Network,
     NativeStorage,
-    Sim
+    Sim,
+    AppVersion
   ],
   bootstrap: [AppComponent]
 })

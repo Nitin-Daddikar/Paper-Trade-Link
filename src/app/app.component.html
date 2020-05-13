@@ -1,16 +1,20 @@
 <ion-app>
     <ion-menu side="start" menuId="first" contentId="main">
-        <ion-header>
+        <!-- <ion-header>
             <ion-toolbar color="primary">
                 <ion-title>
                     Paper Trade Link
                 </ion-title>
             </ion-toolbar>
-        </ion-header>
+        </ion-header> -->
         <ion-content>
+            <ion-item-divider class="ion-padding-bottom ion-padding-top">
+                <ion-img src='assets/icon/logo.png' style="width: 60px;" class="horizontal-center"></ion-img>
+                <ion-label color="primary" style="width: 100%; margin-left: 1rem; font-size: 1rem;"><b>Paper Trade Link</b></ion-label>
+            </ion-item-divider>
             <ion-list>
                 <ion-menu-toggle auto-hide="true">
-                    <ion-item>
+                    <ion-item *ngIf="isUserLoggedIn" routerLink="/broadcast-list">
                         <ion-icon name="notifications-outline" slot="start"></ion-icon>
                         <ion-label>Broadcast</ion-label>
                     </ion-item>
@@ -24,11 +28,11 @@
                     </ion-item>
                     <ion-item *ngIf="isUserLoggedIn" routerLink="/outstanding-list">
                         <ion-icon name="clipboard-outline" slot="start"></ion-icon>
-                        <ion-label>Outstanding List</ion-label>
+                        <ion-label>Outstanding <span *ngIf="totalOutstandingAmount" class="dangerColor" style="font-size: 0.8rem;"><b>(&#8377; {{totalOutstandingAmount}})</b></span></ion-label>
                     </ion-item>
                     <ion-item *ngIf="isUserLoggedIn" routerLink="/cheque-collection">
                         <ion-icon name="cash-outline" slot="start"></ion-icon>
-                        <ion-label>Colleaction of Cheque</ion-label>
+                        <ion-label>Collection of Cheque</ion-label>
                     </ion-item>
                     <ion-item routerLink="/bank-details">
                         <ion-icon name="bookmark-outline" slot="start"></ion-icon>
@@ -56,6 +60,7 @@
                     </ion-item>
                 </ion-menu-toggle>
             </ion-list>
+            <ion-label *ngIf="currentVersionNo" style="position: absolute; bottom: 0.5rem; width: 100%; text-align: center; font-size: 0.8em;">Version: {{currentVersionNo}}</ion-label>
         </ion-content>
     </ion-menu>
     <ion-router-outlet id="main"></ion-router-outlet>

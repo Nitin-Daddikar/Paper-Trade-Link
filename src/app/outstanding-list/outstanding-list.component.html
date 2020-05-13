@@ -13,7 +13,7 @@
 
 <ion-content [fullscreen]="true">
 
-    <ng-container *ngIf="companyResult && companyResult.length > 0">
+    <ng-container *ngIf="companyResult && companyResult.length > 0 else noOutStandingText">
         <ng-container *ngFor="let company of companyResult">
             <ion-card>
                 <ion-card-header>
@@ -79,5 +79,13 @@
             </ion-card>
         </ng-container>
     </ng-container>
+
+    <ng-template #noOutStandingText>
+        <ion-card>
+            <ion-card-header>
+                <ion-card-subtitle color="primary" class="ion-text-center">No results found</ion-card-subtitle>
+            </ion-card-header>
+        </ion-card>
+    </ng-template>
 
 </ion-content>

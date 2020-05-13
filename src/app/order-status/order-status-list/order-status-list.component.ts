@@ -20,11 +20,11 @@ export class OrderStatusListComponent implements OnInit {
   ngOnInit() {
     if (this.utilitiesService.isInternatConnectionAvailable()) {
       this.utilitiesService.showLoading();
-      this.getAcrionCallNumber();
+      this.getActionCallNumber();
     }
   }
 
-  getAcrionCallNumber() {
+  getActionCallNumber() {
     this.apiService.get('API_status/onactioncall').subscribe((response: any) => {
       this.mobileNumber = response;
       this.getOrderList();

@@ -1,0 +1,57 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-toggle>
+                <ion-button>
+                    <ion-icon slot="icon-only" name="menu"></ion-icon>
+                </ion-button>
+            </ion-menu-toggle>
+        </ion-buttons>
+        <ion-title start>Broadcast List</ion-title>
+        <ion-buttons slot="primary">
+            <ion-button color="light" (click)="callNumber()">
+                <ion-icon slot="end" name="call"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-card>
+        <ion-card-content>
+            <ion-list>
+                <ion-item>
+                    <ion-label>
+                        <p class="date-time">20-Apr-20 01:30 PM</p>
+                        <h2 class="dangerColor"><b>New stock available</b></h2>
+                        <p class="subNotititle">Paper size 100.00 X 10.00 is available now.</p>
+                    </ion-label>
+                </ion-item>
+                <ion-item>
+                    <ion-label>
+                        <p class="date-time">03-Mar-20 02:15 PM</p>
+                        <h2 class="dangerColor"><b>New stock available</b></h2>
+                        <p class="subNotititle">Paper size 80.00 X 70.00 is available now.</p>
+                    </ion-label>
+                </ion-item>
+                <ion-item>
+                    <ion-label>
+                        <p class="date-time">16-Feb-14 09:00 AM</p>
+                        <h2 class="dangerColor"><b>Happy Diwali</b></h2>
+                        <p class="subNotititle">May the Divine Light of Diwali spread into your life Peace, Prosperity, Happiness, and Good Health.</p>
+                    </ion-label>
+                </ion-item>
+                <ion-item>
+                    <ion-label>
+                        <p class="date-time">14-Feb-20 11:45 AM</p>
+                        <h2 class="dangerColor"><b>New stock available</b></h2>
+                        <p class="subNotititle">Paper sizes 100.00 X 120.00, 50.00 X 60.00 and 70.00 X 90.00 are available now.</p>
+                    </ion-label>
+                </ion-item>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

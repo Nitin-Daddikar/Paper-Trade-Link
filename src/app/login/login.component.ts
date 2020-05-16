@@ -188,6 +188,7 @@ export class LoginComponent {
         this.utilitiesService.dismissLoading();
         if (count >= 1) {
           this.authService.setMobileNumber = this.mobileNumber;
+          this.authService.setCustomerId = response[0].id;
           this.authService.UserLoggedIn = true;
           this.utilitiesService.calculateOutstadingAmount.next();
           this.navCtrl.navigateRoot('/nearest-sizes');

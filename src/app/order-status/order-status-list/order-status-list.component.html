@@ -21,17 +21,15 @@
         </ion-card-header>
 
         <ion-card-content>
-            <ion-item-divider class="ion-padding-bottom">
-                <ion-grid *ngIf="mobileNumber">
-                    <ion-row class="ion-align-items-center">
-                        <ion-col size="12" class="ion-text-center">
-                            <ion-icon name="call" color="success" class="font2-5" (click)="callNumber()"></ion-icon>
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
-            </ion-item-divider>
+            <ion-grid *ngIf="mobileNumber">
+                <ion-row class="ion-align-items-center">
+                    <ion-col size="12" class="ion-text-center">
+                        <ion-icon name="call" color="success" class="font2-5" (click)="callNumber()"></ion-icon>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
             <ion-list>
-                <ion-item *ngFor="let order of ordersList">
+                <ion-item *ngFor="let order of ordersList" class="order">
                     <ion-grid>
                         <ion-row (click)="openOrder(order)">
                             <ion-col size="3">

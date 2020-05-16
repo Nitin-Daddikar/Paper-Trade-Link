@@ -34,12 +34,16 @@ export class OrderStatusListComponent implements OnInit {
   getOrderList(event?) {
     const mobNumber = this.authService.getMobileNumber;
     this.apiService.get('API_status/index/' + mobNumber).subscribe((response: any) => {
-      this.ordersList = response;
+      if (response && Array.isArray(response) && response.length > 0) {
+        this.ordersList = response;
+      }
+
       if (event) {
         event.target.complete();
       } else {
         this.utilitiesService.dismissLoading();
       }
+
     }, () => {
       if (event) {
         event.target.complete();

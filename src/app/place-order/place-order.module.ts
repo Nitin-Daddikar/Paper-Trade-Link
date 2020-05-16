@@ -17,6 +17,10 @@ import { PlaceOrderComponent } from './place-order.component';
       {
         path: ':id',
         component: PlaceOrderComponent
+      },
+      {
+        path: ':length/:width/:gsm',
+        component: PlaceOrderComponent
       }
     ])
   ]

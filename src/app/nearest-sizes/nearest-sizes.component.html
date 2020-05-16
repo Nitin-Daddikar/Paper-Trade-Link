@@ -64,28 +64,28 @@
 
                     <ion-grid class="resultTable">
                         <ion-row>
-                            <ion-col size="2" class="primaryBG ion-text-center" (click)="changeSort('quality')"> Quality
+                            <ion-col size="2" class="ion-text-center greyBG" (click)="changeSort('quality')"> Quality
                                 <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'" *ngIf="sortCol == 'quality'"></ion-icon>
                             </ion-col>
-                            <ion-col size="1" class="primaryBG ion-text-center" (click)="changeSort('gsm')"> GSM
+                            <ion-col size="1" class="ion-text-center greyBG" (click)="changeSort('gsm')"> GSM
                                 <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'" *ngIf="sortCol == 'gsm'"></ion-icon>
                             </ion-col>
-                            <ion-col size="2" class="primaryBG ion-text-center" (click)="changeSort('Size_INCH')"> Size Inch
+                            <ion-col size="2" class="ion-text-center greyBG" (click)="changeSort('Size_INCH')"> Size Inch
                                 <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'" *ngIf="sortCol == 'Size_INCH'"></ion-icon>
                             </ion-col>
-                            <ion-col size="1" class="primaryBG ion-text-center" (click)="changeSort('total_ups')"> Total No. of UPS
+                            <ion-col size="1" class="ion-text-center greyBG" (click)="changeSort('total_ups')"> Total No. of UPS
                                 <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'" *ngIf="sortCol == 'total_ups'"></ion-icon>
                             </ion-col>
-                            <ion-col size="1" class="primaryBG ion-text-center" (click)="changeSort('utiliz')"> Utilization
+                            <ion-col size="1" class="ion-text-center greyBG" (click)="changeSort('utiliz')"> Utilization
                                 <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'" *ngIf="sortCol == 'utiliz'"></ion-icon>
                             </ion-col>
-                            <ion-col size="2" class="primaryBG ion-text-center" (click)="changeSort('sheet_weight')"> 100 Sheet weight
+                            <ion-col size="2" class="ion-text-center greyBG" (click)="changeSort('sheet_weight')"> 100 Sheet weight
                                 <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'" *ngIf="sortCol == 'sheet_weight'"></ion-icon>
                             </ion-col>
-                            <ion-col size="1" class="primaryBG ion-text-center" (click)="changeSort('bundle')"> Per Bundle No. of sheet
+                            <ion-col size="1" class="ion-text-center greyBG" (click)="changeSort('bundle')"> Per Bundle No. of sheet
                                 <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'" *ngIf="sortCol == 'bundle'"></ion-icon>
                             </ion-col>
-                            <ion-col size="2" class="primaryBG ion-text-center">#</ion-col>
+                            <ion-col size="2" class="ion-text-center greyBG">#</ion-col>
                         </ion-row>
                         <ion-row *ngFor="let res of searchResult">
                             <ion-col size="2" class="ion-text-center"> {{res.quality}} </ion-col>

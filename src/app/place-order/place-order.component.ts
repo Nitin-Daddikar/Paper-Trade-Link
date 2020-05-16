@@ -27,7 +27,15 @@ export class PlaceOrderComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe(params => {
       if (this.utilitiesService.isInternatConnectionAvailable()) {
         const id = params.get('id');
-        this.getStockDetail(id);
+        if (id === undefined || id === null) {
+          this.length = params.get('length');
+          this.width = params.get('width');
+          this.gsm = params.get('gsm');
+          this.utilitiesService.showLoading();
+          this.getCompanyList();
+        } else {
+          this.getStockDetail(id);
+        }
       }
     });
   }
@@ -36,10 +44,10 @@ export class PlaceOrderComponent implements OnInit {
     this.utilitiesService.showLoading();
     this.apiService.get('API_search/GetStockdetail/' + id).subscribe((response: any) => {
       const stockDetail = response;
+      this.quality = stockDetail.quality;
       this.length = stockDetail.size_inch_length;
       this.width = stockDetail.size_inch_width;
       this.gsm = stockDetail.gsm;
-      this.quality = stockDetail.quality;
       this.getCompanyList();
     }, () => {
       this.utilitiesService.dismissLoading();
@@ -65,6 +73,7 @@ export class PlaceOrderComponent implements OnInit {
     if (this.utilitiesService.isInternatConnectionAvailable()) {
       if (this.companyName && this.companyName != '' && this.companyName.length > 0) {
         const mobNumber = this.authService.getMobileNumber;
+        const customerId = this.authService.getCustomerId;
         const submitParam = {
           mobile: mobNumber,
           cust_name: this.companyName,
@@ -73,7 +82,8 @@ export class PlaceOrderComponent implements OnInit {
           qual: this.quality,
           gsm: this.gsm,
           qty: this.noOfSheet,
-          deliv: this.delivery
+          deliv: this.delivery,
+          customer_id: customerId
         };
 
         this.utilitiesService.showLoading();

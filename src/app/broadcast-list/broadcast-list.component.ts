@@ -11,17 +11,32 @@ import { Router } from '@angular/router';
 })
 export class BroadCastListComponent implements OnInit {
 
+  notifications = [];
   mobileNumber = null;
 
   constructor(private utilitiesService: UtilitiesService, private apiService: APIService,
               private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
-    this.getActionCallNumber();
+    this.getNotifications();
+  }
+
+  getNotifications(refreshList = null) {
+    if (!refreshList) {
+      this.utilitiesService.showLoading();
+    }
+    const mobNumber = this.authService.getMobileNumber;
+    this.apiService.get('API_notification/push_notification_list/' + mobNumber).subscribe((response: any) => {
+      this.notifications = response;
+      if (refreshList) {
+        refreshList.target.complete();
+      } else {
+        this.getActionCallNumber();
+      }
+    }, () => this.utilitiesService.dismissLoading());
   }
 
   getActionCallNumber() {
-    this.utilitiesService.showLoading();
     this.apiService.get('API_status/onactioncall').subscribe((response: any) => {
       this.mobileNumber = response;
       this.utilitiesService.dismissLoading();
@@ -32,9 +47,14 @@ export class BroadCastListComponent implements OnInit {
     window.open('tel:' + this.mobileNumber, '_system');
   }
 
+  openNearestFindPage(noti) {
+    if (noti && noti.record) {
+      const data = JSON.parse(noti.record);
+      this.router.navigate([`/nearest-sizes/${data.heigth}/${data.width}/${data.gsm}`]);
+    }
+  }
+
   doRefresh(event) {
-    setTimeout(() => {
-      event.target.complete();
-    }, 2000);
+    this.getNotifications(event);
   }
 }

@@ -3,6 +3,12 @@
     color: white;
 }
 
+.greyBG {
+    background: lightgray;
+    font-weight: 700;
+    color: black;
+}
+
 ::ng-deep .resultTable ion-col {
     border: 1px solid black;
     font-size: 0.7rem;

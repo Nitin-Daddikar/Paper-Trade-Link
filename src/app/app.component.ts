@@ -134,13 +134,27 @@ export class AppComponent {
           mobileNumber => {
             if (mobileNumber) {
               this.authService.setMobileNumber = mobileNumber;
-              this.storage.getItem('isLoggedIn').then(
-                isLoggedIn => {
-                  this.authService.UserLoggedIn = isLoggedIn ? isLoggedIn : false;
-                  this.hideSplashScreen();
+
+              this.storage.getItem('customerId').then(
+                customerId => {
+                  if (customerId) {
+                    this.authService.setCustomerId = customerId;
+
+                    this.storage.getItem('isLoggedIn').then(
+                      isLoggedIn => {
+                        this.authService.UserLoggedIn = isLoggedIn ? isLoggedIn : false;
+                        this.hideSplashScreen();
+                      },
+                      () => this.hideSplashScreen()
+                    );
+
+                  } else {
+                    this.hideSplashScreen();
+                  }
                 },
                 () => this.hideSplashScreen()
               );
+
             } else {
               this.hideSplashScreen();
             }
@@ -149,9 +163,9 @@ export class AppComponent {
         );
       } else {
         // Nitin temp
-        this.authService.setMobileNumber = '9699814688';
-        this.authService.UserLoggedIn = true;
-        this.hideSplashScreen();
+        // this.authService.setMobileNumber = '9699814688';
+        // this.authService.UserLoggedIn = true;
+        // this.hideSplashScreen();
       }
 
     });
@@ -183,7 +197,7 @@ export class AppComponent {
   onPushOpened = function(receivedData) {
     if (receivedData.action && receivedData.action.actionID === 'order_now') {
       const data = receivedData.notification.payload.additionalData;
-      this.URLToOpen = `/nearest-sizes/${data.height}/${data.width}/${data.gsm}`;
+      this.URLToOpen = `/place-order/${data.height}/${data.width}/${data.gsm}`;
     } else {
       this.URLToOpen = '/broadcast-list';
     }

@@ -5,3 +5,8 @@
 .dangerColor {
     color: var(--ion-color-danger);
 }
+
+::ng-deep ion-item.order {
+    --inner-border-width: 1px;
+    --padding-start: 0px;
+}

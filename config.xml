@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.papertradelink2" version="20.05.13" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.papertradelink2" version="20.05.16" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>PTL New</name>
-    <description>An awesome Ionic/Cordova app.</description>
-    <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <description>Paper Trade Link Application</description>
+    <author email="hi@ionicframework.com" href="http://ionicframework.com/">Mohit Shah</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

@@ -8,6 +8,8 @@ export class AuthService {
 
     private isLoggedIn = false;
     private mobileNumber: any = '';
+    private customerId: any = '';
+
 
     constructor(private storage: NativeStorage) { }
 
@@ -16,6 +18,7 @@ export class AuthService {
         if (loggedIn) {
             this.storage.setItem('isLoggedIn', this.isLoggedIn);
             this.storage.setItem('mobileNumber', this.mobileNumber);
+            this.storage.setItem('customerId', this.customerId);
         }
     }
 
@@ -31,11 +34,20 @@ export class AuthService {
         return this.mobileNumber;
     }
 
+    set setCustomerId(customerId) {
+        this.customerId = customerId;
+    }
+
+    get getCustomerId() {
+        return this.customerId;
+    }
+
     logOutUser() {
       this.UserLoggedIn = false;
       this.mobileNumber = '';
       this.storage.remove('isLoggedIn');
       this.storage.remove('mobileNumber');
+      this.storage.remove('customerId');
     }
 
 }

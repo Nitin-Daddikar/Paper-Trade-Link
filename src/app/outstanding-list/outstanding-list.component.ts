@@ -19,18 +19,32 @@ export class OutstandingListComponent implements OnInit {
     this.getDetails();
   }
 
-  getDetails() {
+  getDetails(event = null) {
     if (this.utilitiesService.isInternatConnectionAvailable()) {
       this.companyResult = null;
-      this.utilitiesService.showLoading();
+      if (!event) {
+        this.utilitiesService.showLoading();
+      }
       const mobNumber = this.authService.getMobileNumber;
       this.apiService.get('API_outstand/company/' + mobNumber).subscribe((response: any) => {
         this.companyResult = response;
-        this.utilitiesService.dismissLoading();
+        if (event) {
+          event.target.complete();
+        } else {
+          this.utilitiesService.dismissLoading();
+        }
       }, () => {
+        if (event) {
+          event.target.complete();
+        } else {
+          this.utilitiesService.dismissLoading();
+        }
         this.utilitiesService.presentErrorAlert();
-        this.utilitiesService.dismissLoading();
       });
     }
+  }
+
+  doRefresh(event) {
+    this.getDetails(event);
   }
 }

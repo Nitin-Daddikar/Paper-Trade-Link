@@ -89,7 +89,7 @@ export class PlaceOrderComponent implements OnInit {
         this.utilitiesService.showLoading();
         this.apiService.post('API_addorder/add_order', submitParam).subscribe((res) => {
           this.utilitiesService.dismissLoading();
-          if (res && res > 1) {
+          if (res && res >= 1) {
             this.utilitiesService.presentErrorAlert('New Order Added', 'Your order is placed successfully.');
             this.resetForm();
           } else {

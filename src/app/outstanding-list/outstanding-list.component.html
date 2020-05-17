@@ -12,7 +12,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ng-container *ngIf="companyResult && companyResult.length > 0 else noOutStandingText">
         <ng-container *ngFor="let company of companyResult">
             <ion-card>

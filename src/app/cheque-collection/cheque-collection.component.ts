@@ -42,11 +42,13 @@ export class ChequeCollectionComponent implements OnInit {
     if (this.utilitiesService.isInternatConnectionAvailable()) {
       if (this.companyName && this.companyName != '' && this.companyName.length > 0 && this.amount && this.amount > 0) {
         const mobNumber = this.authService.getMobileNumber;
+        const customerId = this.authService.getCustomerId;
         const chequeParam = {
           company_name: this.companyName,
           mobile: mobNumber,
           amount: this.amount,
-          remark: this.remark
+          remark: this.remark,
+          customer_id: customerId
         };
 
         this.utilitiesService.showLoading();

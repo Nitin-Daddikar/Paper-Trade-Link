@@ -21,7 +21,7 @@
             <ion-label>Company Name <span class="dangerColor font1-2">*</span></ion-label>
             <ion-item>
                 <ion-select placeholder="Select Company" [(ngModel)]="companyName">
-                    <ion-select-option *ngFor="let company of companyList" [value]="company.company_name">{{company.company_name}}</ion-select-option>
+                    <ion-select-option *ngFor="let company of companyList" [value]="company.id">{{company.company_name}}</ion-select-option>
                 </ion-select>
             </ion-item>
 

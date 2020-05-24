@@ -26,8 +26,10 @@ export class BroadCastListComponent implements OnInit {
       this.utilitiesService.showLoading();
     }
     const mobNumber = this.authService.getMobileNumber;
-    this.apiService.get('API_notification/push_notification_list/' + mobNumber).subscribe((response: any) => {
-      this.notifications = response;
+    this.apiService.get('API_notification/push_notification_list?mobile=' + mobNumber).subscribe((response: any) => {
+      if (response && response.data) {
+        this.notifications = response.data;
+      }
       if (refreshList) {
         refreshList.target.complete();
       } else {

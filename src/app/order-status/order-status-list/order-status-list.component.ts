@@ -33,13 +33,15 @@ export class OrderStatusListComponent implements OnInit {
 
   getOrderList(event?) {
     const mobNumber = this.authService.getMobileNumber;
-    this.apiService.get('API_status/index/' + mobNumber).subscribe((response: any) => {
-      if (response && Array.isArray(response) && response.length > 0) {
-        this.ordersList = response;
-      }
-
+    this.apiService.get('API_status/get_challan_list?mobile=' + mobNumber).subscribe((response: any) => {
       if (event) {
         event.target.complete();
+      } else {
+        this.utilitiesService.dismissLoading();
+      }
+
+      if (response && response.data && Array.isArray(response.data) && response.data.length > 0) {
+        this.ordersList = response.data;
       } else {
         this.utilitiesService.dismissLoading();
       }
@@ -50,6 +52,7 @@ export class OrderStatusListComponent implements OnInit {
       } else {
         this.utilitiesService.dismissLoading();
       }
+      this.utilitiesService.dismissLoading();
     });
   }
 

@@ -16,9 +16,9 @@ export class BankDetailsComponent implements OnInit {
   ngOnInit() {
     if (this.utilitiesService.isInternatConnectionAvailable()) {
       this.utilitiesService.showLoading();
-      this.apiService.get('API_bank/bank_details').subscribe((bankDetails: any) => {
-        if (bankDetails && bankDetails.bank_details) {
-          this.bankDetails = bankDetails.bank_details;
+      this.apiService.get('API_bank/bank_details').subscribe((response: any) => {
+        if (response && response.data && response.data.bank_details) {
+          this.bankDetails = response.data.bank_details;
         } else {
           this.utilitiesService.presentErrorAlert();
         }

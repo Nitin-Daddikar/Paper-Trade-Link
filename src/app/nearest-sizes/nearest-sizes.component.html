@@ -73,31 +73,31 @@
                             <ion-col size="2" class="ion-text-center greyBG" (click)="changeSort('Size_INCH')"> Size Inch
                                 <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'" *ngIf="sortCol == 'Size_INCH'"></ion-icon>
                             </ion-col>
-                            <ion-col size="1" class="ion-text-center greyBG" (click)="changeSort('total_ups')"> Total No. of UPS
+                            <ion-col class="col1-5 ion-text-center greyBG" (click)="changeSort('total_ups')"> Total No. of UPS
                                 <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'" *ngIf="sortCol == 'total_ups'"></ion-icon>
                             </ion-col>
-                            <ion-col size="1" class="ion-text-center greyBG" (click)="changeSort('utiliz')"> Utilization
+                            <ion-col class="col1-5 ion-text-center greyBG" (click)="changeSort('utiliz')"> Utilization
                                 <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'" *ngIf="sortCol == 'utiliz'"></ion-icon>
                             </ion-col>
-                            <ion-col size="2" class="ion-text-center greyBG" (click)="changeSort('sheet_weight')"> 100 Sheet weight
+                            <ion-col class="col1-5 ion-text-center greyBG" (click)="changeSort('sheet_weight')"> 100 Sheet weight
                                 <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'" *ngIf="sortCol == 'sheet_weight'"></ion-icon>
                             </ion-col>
-                            <ion-col size="1" class="ion-text-center greyBG" (click)="changeSort('bundle')"> Per Bundle No. of sheet
+                            <ion-col class="col1-5 ion-text-center greyBG" (click)="changeSort('bundle')"> Per Bundle No. of sheet
                                 <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'" *ngIf="sortCol == 'bundle'"></ion-icon>
                             </ion-col>
-                            <ion-col size="2" class="ion-text-center greyBG">#</ion-col>
+                            <ion-col size="1" class="ion-text-center greyBG">#</ion-col>
                         </ion-row>
                         <ion-row *ngFor="let res of searchResult">
                             <ion-col size="2" class="ion-text-center"> {{res.quality}} </ion-col>
                             <ion-col size="1" class="ion-text-center"> {{res.gsm}} </ion-col>
                             <ion-col size="2" class="ion-text-center"> {{res.Size_INCH}} </ion-col>
-                            <ion-col size="1" class="ion-text-center"> {{res.total_ups}} </ion-col>
-                            <ion-col size="1" class="ion-text-center"> {{res.utiliz}}% </ion-col>
-                            <ion-col size="2" class="ion-text-center"> {{res.sheet_weight}} </ion-col>
-                            <ion-col size="1" class="ion-text-center"> {{res.bundle}} </ion-col>
-                            <ion-col size="2" class="ion-text-center">
+                            <ion-col class="col1-5 ion-text-center"> {{res.total_ups}} </ion-col>
+                            <ion-col class="col1-5 ion-text-center"> {{res.utiliz}}% </ion-col>
+                            <ion-col class="col1-5 ion-text-center"> {{res.sheet_weight}} </ion-col>
+                            <ion-col class="col1-5 ion-text-center"> {{res.bundle}} </ion-col>
+                            <ion-col size="1" class="ion-text-center">
                                 <div class="primaryBG orderBtn" (click)="orderNow(res)">
-                                    <span>Order<br>Now</span>
+                                    <ion-icon name="cart-outline"></ion-icon>
                                 </div>
                             </ion-col>
                         </ion-row>

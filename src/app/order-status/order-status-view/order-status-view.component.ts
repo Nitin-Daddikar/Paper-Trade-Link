@@ -34,9 +34,13 @@ export class OrderStatusViewComponent implements OnInit {
   }
 
   getOrderDetail() {
-    this.apiService.get('API_status/detials/' + this.orderId).subscribe((response: any) => {
-      this.ordersDetailsList = response;
+    this.apiService.get('API_status/detials?challan_no=' + this.orderId).subscribe((response: any) => {
       this.utilitiesService.dismissLoading();
+      if (response && response.data) {
+        this.ordersDetailsList = response.data;
+      } else {
+        this.utilitiesService.presentErrorAlert();
+      }
     }, () => this.utilitiesService.dismissLoading());
   }
 

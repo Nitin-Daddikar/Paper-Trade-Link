@@ -26,12 +26,17 @@ export class OutstandingListComponent implements OnInit {
         this.utilitiesService.showLoading();
       }
       const mobNumber = this.authService.getMobileNumber;
-      this.apiService.get('API_outstand/company/' + mobNumber).subscribe((response: any) => {
-        this.companyResult = response;
+      this.apiService.get('API_outstand/company?mobile=' + mobNumber).subscribe((response: any) => {
         if (event) {
           event.target.complete();
         } else {
           this.utilitiesService.dismissLoading();
+        }
+
+        if (response && response.data) {
+          this.companyResult = response.data;
+        } else {
+          this.utilitiesService.presentErrorAlert();
         }
       }, () => {
         if (event) {

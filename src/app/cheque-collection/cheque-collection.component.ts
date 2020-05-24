@@ -27,10 +27,14 @@ export class ChequeCollectionComponent implements OnInit {
     if (this.utilitiesService.isInternatConnectionAvailable()) {
       this.companyList = [];
       this.utilitiesService.showLoading();
-      const mobNumber = this.authService.getMobileNumber;
-      this.apiService.get('API_addorder/company_name/' + mobNumber).subscribe((response: any) => {
-        this.companyList = response;
+      const mobileNumber = this.authService.getMobileNumber;
+      this.apiService.get('API_addorder/find_company_list?mobile=' + mobileNumber).subscribe((response: any) => {
         this.utilitiesService.dismissLoading();
+        if (response && response.data) {
+          this.companyList = response.data;
+        } else {
+          this.utilitiesService.presentErrorAlert();
+        }
       }, () => {
         this.utilitiesService.dismissLoading();
         this.utilitiesService.presentErrorAlert();
@@ -43,18 +47,18 @@ export class ChequeCollectionComponent implements OnInit {
       if (this.companyName && this.companyName != '' && this.companyName.length > 0 && this.amount && this.amount > 0) {
         const mobNumber = this.authService.getMobileNumber;
         const customerId = this.authService.getCustomerId;
-        const chequeParam = {
-          company_name: this.companyName,
-          mobile: mobNumber,
-          amount: this.amount,
-          remark: this.remark,
-          customer_id: customerId
-        };
+
+        const formData = new FormData();
+        formData.append('company_name', this.companyName);
+        formData.append('mobile', mobNumber);
+        formData.append('amount', this.amount);
+        formData.append('remark', this.remark);
+        formData.append('customer_id', customerId);
 
         this.utilitiesService.showLoading();
-        this.apiService.post('API_Cheque_collect/collect_cheque', chequeParam).subscribe((res) => {
+        this.apiService.post('API_Cheque_collect/collect_cheque', formData).subscribe((res: any) => {
           this.utilitiesService.dismissLoading();
-          if (res && res['mobile']) {
+          if (res && res.data) {
             this.utilitiesService.presentErrorAlert('Success', 'Cheque collection submitted successfully.');
             this.resetForm();
           } else {

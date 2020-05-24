@@ -122,9 +122,9 @@ export class AppComponent {
   }
 
   getLabels() {
-    this.apiService.get('API_labels/labels').subscribe((labels: any) => {
-      if (labels) {
-        this.utilitiesService.setLabels(labels);
+    this.apiService.get('API_labels/labels').subscribe((response: any) => {
+      if (response && response.data) {
+        this.utilitiesService.setLabels(response.data);
       }
     }, () => {},
     () => {
@@ -163,7 +163,8 @@ export class AppComponent {
         );
       } else {
         // Nitin temp
-        // this.authService.setMobileNumber = '9699814688';
+        // this.authService.setMobileNumber = '7387533080';
+        // this.authService.setCustomerId = 2168;
         // this.authService.UserLoggedIn = true;
         // this.hideSplashScreen();
       }
@@ -215,10 +216,10 @@ export class AppComponent {
     this.totalOutstandingAmount = null;
     if (this.isUserLoggedIn) {
       const mobNumber = this.authService.getMobileNumber;
-      this.apiService.get('API_outstand/company/' + mobNumber).subscribe((response: any) => {
-        if (response && response.length > 0) {
+      this.apiService.get('API_outstand/company?mobile=' + mobNumber).subscribe((response: any) => {
+        if (response && response.data && response.data.length > 0) {
           let totalAmount = 0;
-          response.forEach(company => {
+          response.data.forEach(company => {
             if (company.summary && company.summary.length > 0) {
               const summary = company.summary;
               totalAmount += +summary[summary.length-1].Total_summ;

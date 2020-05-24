@@ -44,12 +44,19 @@ export class NearestSizesComponent implements OnInit {
         this.ascSort = true;
         this.sortCol = '';
         this.utilitiesService.showLoading();
-        const mobNumber = this.authService.getMobileNumber;
-        this.apiService.get('API_search/search_new/' + this.length + '/' + this.width + '/' + mobNumber + '/' + this.gsm)
+        const customerId = this.authService.getCustomerId;
+
+        const formData = new FormData();
+        formData.append('length', this.length);
+        formData.append('width', this.width);
+        formData.append('gsm', this.gsm);
+        formData.append('customer_id', customerId);
+
+        this.apiService.post('API_search/search_new', formData)
         .subscribe((response: any) => {
-          if (response && response.stock_access != undefined && response.stock_access != 1) {
-            this.searchResult = response.list;
-            this.cdr.detectChanges()
+          if (response && response.data && response.data.stock_access != undefined && response.data.stock_access != 1) {
+            this.searchResult = response.data.list;
+            this.cdr.detectChanges();
           } else {
             this.utilitiesService.presentErrorAlert();
           }

@@ -15,6 +15,8 @@ export class NearestSizesComponent implements OnInit {
   length: any;
   width: any;
   gsm: any;
+  productID: any;
+  listProducts = [];
 
   searchResult = null;
   ascSort = true;
@@ -28,12 +30,27 @@ export class NearestSizesComponent implements OnInit {
       if (this.utilitiesService.isInternatConnectionAvailable()) {
         const length = params.get('length');
         if (length !== undefined && length !== null && length !== '') {
+          this.loadMasters(false);
           this.length = +length;
           this.width = +params.get('width');
           this.gsm = +params.get('gsm');
           this.search();
+        } else {
+          this.loadMasters();
         }
       }
+    });
+  }
+
+  loadMasters(showLoader = true) {
+    this.listProducts = [];
+    this.apiService.get('API_search/getMasters')
+    .subscribe((response: any) => {
+      if (response && response.data) {
+        this.listProducts = response.data.product_group;
+        this.cdr.detectChanges();
+      } 
+    }, () => {
     });
   }
 
@@ -50,6 +67,9 @@ export class NearestSizesComponent implements OnInit {
         formData.append('length', this.length);
         formData.append('width', this.width);
         formData.append('gsm', this.gsm);
+        if (this.productID) {
+          formData.append('product_group', this.productID);
+        }
         formData.append('customer_id', customerId);
 
         this.apiService.post('API_search/search_new', formData)

@@ -20,6 +20,16 @@
         <ion-card-content style="padding : 0;">
             <ion-grid>
                 <ion-row>
+                    <ion-col size="12">
+                        <ion-item>
+                            <ion-label position="stacked" class="font1">Select Product Group</ion-label>
+                            <ion-select [(ngModel)]="productID" interface="popover">
+                                <ion-select-option *ngFor="let product of listProducts" [value]="product.id">{{product.group_name}}</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
                     <ion-col size="5">
                         <ion-item>
                             <ion-label position="stacked" class="font1">Length</ion-label>

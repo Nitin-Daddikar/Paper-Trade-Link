@@ -15,7 +15,7 @@ export class NearestSizesComponent implements OnInit {
   length: any;
   width: any;
   gsm: any;
-  productID: any;
+  product_group: any;
   listProducts = [];
 
   searchResult = null;
@@ -34,6 +34,7 @@ export class NearestSizesComponent implements OnInit {
           this.length = +length;
           this.width = +params.get('width');
           this.gsm = +params.get('gsm');
+          this.product_group = params.get('product_group');
           this.search();
         } else {
           this.loadMasters();
@@ -55,39 +56,43 @@ export class NearestSizesComponent implements OnInit {
   }
 
   search() {
-    if (this.length && this.width && this.gsm && this.length > 0 && this.width > 0 && this.gsm > 0) {
-      if (this.utilitiesService.isInternatConnectionAvailable()) {
-        this.searchResult = null;
-        this.ascSort = true;
-        this.sortCol = '';
-        this.utilitiesService.showLoading();
-        const customerId = this.authService.getCustomerId;
+    if (this.product_group != undefined && this.product_group != null && this.product_group != '') {
+      if (this.length && this.width && this.gsm && this.length > 0 && this.width > 0 && this.gsm > 0) {
+        if (this.utilitiesService.isInternatConnectionAvailable()) {
+          this.searchResult = null;
+          this.ascSort = true;
+          this.sortCol = '';
+          this.utilitiesService.showLoading();
+          const customerId = this.authService.getCustomerId;
 
-        const formData = new FormData();
-        formData.append('length', this.length);
-        formData.append('width', this.width);
-        formData.append('gsm', this.gsm);
-        if (this.productID) {
-          formData.append('product_group', this.productID);
-        }
-        formData.append('customer_id', customerId);
-
-        this.apiService.post('API_search/search_new', formData)
-        .subscribe((response: any) => {
-          if (response && response.data && response.data.stock_access != undefined && response.data.stock_access != 1) {
-            this.searchResult = response.data.list;
-            this.cdr.detectChanges();
-          } else {
-            this.utilitiesService.presentErrorAlert();
+          const formData = new FormData();
+          formData.append('length', this.length);
+          formData.append('width', this.width);
+          formData.append('gsm', this.gsm);
+          if (this.product_group) {
+            formData.append('product_group', this.product_group);
           }
-          this.utilitiesService.dismissLoading();
-        }, () => {
-          this.utilitiesService.presentErrorAlert();
-          this.utilitiesService.dismissLoading();
-        });
+          formData.append('customer_id', customerId);
+
+          this.apiService.post('API_search/search_new', formData)
+          .subscribe((response: any) => {
+            if (response && response.data && response.data.stock_access != undefined && response.data.stock_access != 1) {
+              this.searchResult = response.data.list;
+              this.cdr.detectChanges();
+            } else {
+              this.utilitiesService.presentErrorAlert();
+            }
+            this.utilitiesService.dismissLoading();
+          }, () => {
+            this.utilitiesService.presentErrorAlert();
+            this.utilitiesService.dismissLoading();
+          });
+        }
+      } else {
+        this.utilitiesService.presentErrorAlert('Error', 'Length, Width and GSM can\'t be empty and less than or equal to zero.');
       }
     } else {
-      this.utilitiesService.presentErrorAlert('Error', 'Length, Width and GSM can\'t be empty and less than or equal to zero.');
+      this.utilitiesService.presentErrorAlert('Error', 'Please Select Product Group.');
     }
   }
 

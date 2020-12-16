@@ -52,7 +52,7 @@ export class BroadCastListComponent implements OnInit {
   openNearestFindPage(noti) {
     if (noti && noti.record) {
       const data = JSON.parse(noti.record);
-      this.router.navigate([`/nearest-sizes/${data.heigth}/${data.width}/${data.gsm}`]);
+      this.router.navigate([`/nearest-sizes/${data.heigth}/${data.width}/${data.gsm}/${data.product_group}`]);
     }
   }
 

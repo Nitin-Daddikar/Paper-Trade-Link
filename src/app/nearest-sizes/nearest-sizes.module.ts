@@ -19,7 +19,7 @@ import { NearestSizesComponent } from './nearest-sizes.component';
         component: NearestSizesComponent
       },
       {
-        path: ':length/:width/:gsm',
+        path: ':length/:width/:gsm/:product_group',
         component: NearestSizesComponent
       }
     ])

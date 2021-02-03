@@ -28,3 +28,15 @@
     width: calc(calc(1.5 / 12) * 100%) !important;
     max-width: calc(calc(1.5 / 12) * 100%) !important;
 }
+
+table,
+td,
+th {
+    border: 1px solid black;
+}
+
+td,
+th {
+    padding: 2px;
+    text-align: center;
+}

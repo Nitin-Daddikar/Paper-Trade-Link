@@ -17,6 +17,9 @@ export class NearestSizesComponent implements OnInit {
   gsm: any;
   product_group: any;
   listProducts = [];
+	headers : any = {};
+  headersKeys : any = [];
+  headersWidth = {};
 
   searchResult = null;
   ascSort = true;
@@ -72,12 +75,30 @@ export class NearestSizesComponent implements OnInit {
           if (this.product_group) {
             formData.append('product_group', this.product_group);
           }
-          formData.append('customer_id', customerId);
+          formData.append('customer_id', '2168');
 
-          this.apiService.post('API_search/search_new', formData)
-          .subscribe((response: any) => {
-            if (response && response.data && response.data.stock_access != undefined && response.data.stock_access != 1) {
-              this.searchResult = response.data.list;
+          this.apiService.post('API_search/search_dynamic_column_wise', formData)
+          .subscribe((data: any) => {
+            if (!_.isEmpty(data) && !_.isEmpty(data.data) && data.data.stock_access != undefined && data.data.stock_access != 1) {
+              if (!_.isEmpty(data.data.list)) {
+                this.headers = data.headers;
+                this.headersWidth = data.headers_width;
+                this.headersKeys = Object.keys(data.headers);
+                // this.sortKey = this.headersKeys[0];
+                this.headersKeys.forEach(element => {
+                  this.search[element] = '';
+                });
+                this.searchResult = data.data.list;
+                this.searchResult.map(company => {
+                  this.headersKeys.forEach(element => {
+                    company[element] = ''+company[element];
+                  });
+                })
+              } else {
+                this.searchResult = [];
+              }
+              // this.searchResult = _.sortBy(this.searchResult, [function(o) { return o[this.sortKey] }.bind(this)]);
+              // this.companies = _.cloneDeep(this.allCompanies);
               this.cdr.detectChanges();
             } else {
               this.utilitiesService.presentErrorAlert();
@@ -97,6 +118,7 @@ export class NearestSizesComponent implements OnInit {
   }
 
   changeSort(sortCol) {
+    console.log('1');
     this.ascSort = !this.ascSort;
     this.sortCol = sortCol;
     this.searchResult = _.orderBy(this.searchResult, this.sortCol, this.ascSort ? 'asc' : 'desc');

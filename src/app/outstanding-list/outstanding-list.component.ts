@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UtilitiesService } from '../services/utilities.services';
 import { APIService } from '../services/api.services';
 import { AuthService } from '../services/auth.service';
+import { Screenshot } from '@ionic-native/screenshot/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @Component({
   selector: 'app-outstanding-list',
@@ -13,7 +15,7 @@ export class OutstandingListComponent implements OnInit {
   companyResult = null;
 
   constructor(private utilitiesService: UtilitiesService, private apiService: APIService,
-              private authService: AuthService) { }
+              private authService: AuthService, private screenshot: Screenshot, private socialSharing: SocialSharing) { }
 
   ngOnInit() {
     this.getDetails();
@@ -51,5 +53,15 @@ export class OutstandingListComponent implements OnInit {
 
   doRefresh(event) {
     this.getDetails(event);
+  }
+
+  shareScreenshot() {
+    this.screenshot.URI(80).then((uri) => {
+      this.socialSharing.share('', '', uri.URI);
+    }, (e) => {
+      if (e == 20) {
+        this.utilitiesService.presentErrorAlert('Error', 'Please allow storage permission from settings to share screenshot.');
+      }
+    });
   }
 }

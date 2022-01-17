@@ -10,6 +10,8 @@ import { Network } from '@ionic-native/network/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Sim } from '@ionic-native/sim/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
+import { Screenshot } from '@ionic-native/screenshot/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -39,7 +41,9 @@ import { AuthService } from './services/auth.service';
     Network,
     NativeStorage,
     Sim,
-    AppVersion
+    AppVersion,
+    Screenshot,
+    SocialSharing
   ],
   bootstrap: [AppComponent]
 })

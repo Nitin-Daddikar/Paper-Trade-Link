@@ -4,8 +4,6 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NearestSizesComponent } from './nearest-sizes.component';
-import { Screenshot } from '@ionic-native/screenshot/ngx';
-import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @NgModule({
   declarations: [
@@ -26,7 +24,6 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
       }
     ])
   ],
-  providers: [Screenshot, SocialSharing],
   exports: [NearestSizesComponent]
 })
 export class NearestSizesModule { }

@@ -27,6 +27,8 @@ export class NearestSizesComponent implements OnInit {
   ascSort = true;
   sortCol = '';
 
+  loadPage = false;
+
   constructor(private utilitiesService: UtilitiesService, private apiService: APIService,  private activatedRoute: ActivatedRoute, private socialSharing: SocialSharing, 
               private authService: AuthService, private cdr: ChangeDetectorRef, private router: Router, private screenshot: Screenshot) { }
 
@@ -35,12 +37,11 @@ export class NearestSizesComponent implements OnInit {
       if (this.utilitiesService.isInternatConnectionAvailable()) {
         const length = params.get('length');
         if (length !== undefined && length !== null && length !== '') {
-          this.loadMasters(false);
           this.length = +length;
           this.width = +params.get('width');
           this.gsm = +params.get('gsm');
           this.product_group = params.get('product_group');
-          this.cdr.detectChanges();
+          this.loadMasters();
           this.search();
         } else {
           this.loadMasters();
@@ -49,15 +50,18 @@ export class NearestSizesComponent implements OnInit {
     });
   }
 
-  loadMasters(showLoader = true) {
+  loadMasters() {
     this.listProducts = [];
     this.apiService.get('API_search/getMasters')
     .subscribe((response: any) => {
       if (response && response.data) {
         this.listProducts = response.data.product_group;
+        this.loadPage = true;
         this.cdr.detectChanges();
       } 
     }, () => {
+      this.loadPage = true;
+      this.cdr.detectChanges();
     });
   }
 

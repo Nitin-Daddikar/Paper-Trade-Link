@@ -17,7 +17,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <ion-card>
+    <ion-card *ngIf="loadPage">
         <ion-card-header>
             <ion-card-title color="primary" class="ion-text-center">Find Nearest Sizes<br><span style="color: black;    font-size: 16px;">(in Inch)</span></ion-card-title>
         </ion-card-header>

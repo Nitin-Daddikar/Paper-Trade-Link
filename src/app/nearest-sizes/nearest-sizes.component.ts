@@ -40,6 +40,7 @@ export class NearestSizesComponent implements OnInit {
           this.width = +params.get('width');
           this.gsm = +params.get('gsm');
           this.product_group = params.get('product_group');
+          this.cdr.detectChanges();
           this.search();
         } else {
           this.loadMasters();

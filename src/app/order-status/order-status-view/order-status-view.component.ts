@@ -3,6 +3,8 @@ import { UtilitiesService } from '../../services/utilities.services';
 import { APIService } from '../../services/api.services';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute } from '@angular/router';
+import { Screenshot } from '@ionic-native/screenshot/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @Component({
   selector: 'app-order-status-view',
@@ -16,7 +18,7 @@ export class OrderStatusViewComponent implements OnInit {
   mobileNumber;
 
   constructor(private utilitiesService: UtilitiesService, private apiService: APIService,
-              private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute, private screenshot: Screenshot, private socialSharing: SocialSharing) { }
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
@@ -46,5 +48,14 @@ export class OrderStatusViewComponent implements OnInit {
 
   callNumber() {
     window.open('tel:' + this.mobileNumber, '_system');
+  }
+  shareScreenshot() {
+    this.screenshot.URI(80).then((uri) => {
+      this.socialSharing.share('', '', uri.URI);
+    }, (e) => {
+      if (e == 20) {
+        this.utilitiesService.presentErrorAlert('Error', 'Please allow storage permission from settings to share screenshot.');
+      }
+    });
   }
 }

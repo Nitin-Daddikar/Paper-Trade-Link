@@ -3,6 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UtilitiesService } from '../services/utilities.services';
 import { APIService } from '../services/api.services';
 import { AuthService } from '../services/auth.service';
+import { Screenshot } from '@ionic-native/screenshot/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import * as _ from 'lodash';
 
 @Component({
@@ -25,19 +27,22 @@ export class NearestSizesComponent implements OnInit {
   ascSort = true;
   sortCol = '';
 
-  constructor(private utilitiesService: UtilitiesService, private apiService: APIService,  private activatedRoute: ActivatedRoute,
-              private authService: AuthService, private cdr: ChangeDetectorRef, private router: Router) { }
+  loadPage = false;
+
+  constructor(private utilitiesService: UtilitiesService, private apiService: APIService,  private activatedRoute: ActivatedRoute, private socialSharing: SocialSharing, 
+    private authService: AuthService, private cdr: ChangeDetectorRef, private router: Router, private screenshot: Screenshot) { }
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
       if (this.utilitiesService.isInternatConnectionAvailable()) {
         const length = params.get('length');
         if (length !== undefined && length !== null && length !== '') {
-          this.loadMasters(false);
           this.length = +length;
           this.width = +params.get('width');
           this.gsm = +params.get('gsm');
           this.product_group = params.get('product_group');
+          this.cdr.detectChanges();
+          this.loadMasters();
           this.search();
         } else {
           this.loadMasters();
@@ -46,15 +51,18 @@ export class NearestSizesComponent implements OnInit {
     });
   }
 
-  loadMasters(showLoader = true) {
+  loadMasters() {
     this.listProducts = [];
     this.apiService.get('API_search/getMasters')
     .subscribe((response: any) => {
       if (response && response.data) {
         this.listProducts = response.data.product_group;
+        this.loadPage = true;
         this.cdr.detectChanges();
       } 
     }, () => {
+      this.loadPage = true;
+      this.cdr.detectChanges();
     });
   }
 
@@ -75,7 +83,7 @@ export class NearestSizesComponent implements OnInit {
           if (this.product_group) {
             formData.append('product_group', this.product_group);
           }
-          formData.append('customer_id', '2168');
+          formData.append('customer_id', customerId);
 
           this.apiService.post('API_search/search_dynamic_column_wise', formData)
           .subscribe((data: any) => {
@@ -137,5 +145,15 @@ export class NearestSizesComponent implements OnInit {
     if (this.utilitiesService.isInternatConnectionAvailable()) {
       this.router.navigate(['/place-order/' + res.id]);
     }
+  }
+  
+  shareScreenshot() {
+    this.screenshot.URI(80).then((uri) => {
+      this.socialSharing.share('', '', uri.URI);
+    }, (e) => {
+      if (e == 20) {
+        this.utilitiesService.presentErrorAlert('Error', 'Please allow storage permission from settings to share screenshot.');
+      }
+    });
   }
 }

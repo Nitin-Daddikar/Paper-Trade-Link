@@ -23,6 +23,7 @@ import { NearestSizesComponent } from './nearest-sizes.component';
         component: NearestSizesComponent
       }
     ])
-  ]
+  ],
+  exports: [NearestSizesComponent]
 })
 export class NearestSizesModule { }

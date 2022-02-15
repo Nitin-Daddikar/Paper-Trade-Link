@@ -70,11 +70,11 @@
 
             <ng-container *ngIf="searchResult">
                 <div class="ion-text-center" *ngIf="searchResult.length == 0">
-                    <h3>Results Not Found</h3>
+                    <h3>Results not found in {{totalResponseTime}} seconds</h3>
                 </div>
                 <ng-container *ngIf="searchResult.length > 0">
                     <div class="ion-text-center">
-                        <h3>Result Searching size {{length}} X {{width}}</h3>
+                        <h3>Result searching size {{length}} X {{width}} in {{totalResponseTime}} seconds</h3>
                     </div>
 
                     <div style="overflow-x:auto;">

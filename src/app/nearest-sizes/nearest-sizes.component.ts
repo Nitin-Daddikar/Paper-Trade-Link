@@ -29,6 +29,8 @@ export class NearestSizesComponent implements OnInit {
 
   loadPage = false;
 
+  totalResponseTime : any = 0;
+
   constructor(private utilitiesService: UtilitiesService, private apiService: APIService,  private activatedRoute: ActivatedRoute, private socialSharing: SocialSharing, 
               private authService: AuthService, private cdr: ChangeDetectorRef, private router: Router, private screenshot: Screenshot) { }
 
@@ -84,6 +86,8 @@ export class NearestSizesComponent implements OnInit {
           }
           formData.append('customer_id', customerId);
 
+          var date = new Date();
+          let startSeconds = date.valueOf();
           this.apiService.post('API_search/search_dynamic_column_wise', formData)
           .subscribe((data: any) => {
             if (!_.isEmpty(data) && !_.isEmpty(data.data) && data.data.stock_access != undefined && data.data.stock_access != 1) {
@@ -111,6 +115,10 @@ export class NearestSizesComponent implements OnInit {
               this.utilitiesService.presentErrorAlert();
             }
             this.utilitiesService.dismissLoading();
+            
+            var date = new Date();
+            let endSeconds = date.valueOf();
+            this.totalResponseTime = this.millisToMinutesAndSeconds(endSeconds-startSeconds);
           }, () => {
             this.utilitiesService.presentErrorAlert();
             this.utilitiesService.dismissLoading();
@@ -154,5 +162,9 @@ export class NearestSizesComponent implements OnInit {
         this.utilitiesService.presentErrorAlert('Error', 'Please allow storage permission from settings to share screenshot.');
       }
     });
+  }
+
+  millisToMinutesAndSeconds(millis) {
+    return ((millis % 60000) / 1000).toFixed(2);
   }
 }

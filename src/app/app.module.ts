@@ -4,7 +4,6 @@ import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
@@ -34,7 +33,6 @@ import { AuthService } from './services/auth.service';
   ],
   providers: [
     StatusBar,
-    SplashScreen,
     APIService,
     UtilitiesService,
     AuthService,

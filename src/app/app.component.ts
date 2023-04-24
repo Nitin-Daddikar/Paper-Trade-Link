@@ -2,7 +2,6 @@ import { Component, QueryList, ViewChildren } from '@angular/core';
 
 import { Platform, NavController, ModalController, MenuController,
           ActionSheetController, PopoverController, IonRouterOutlet } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { APIService } from './services/api.services';
 import { UtilitiesService } from './services/utilities.services';
@@ -21,7 +20,6 @@ export class AppComponent {
 
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private apiService: APIService,
     private utilitiesService: UtilitiesService,
@@ -177,7 +175,7 @@ export class AppComponent {
       this.navCtrl.navigateRoot(this.URLToOpen);
     }
     this.statusBar.styleDefault();
-    this.splashScreen.hide();
+    (navigator as any).splashscreen.hide();
     this.calculateOutstadingAmount();
   }
 
@@ -186,10 +184,14 @@ export class AppComponent {
       try {
         // clarus.nitin - '7f98b411-2697-4e66-9b79-3711e2d33396', '266760528438'
         // mohit - 'd5689a9a-30c3-487b-bbae-684ea1c61d4d', '305260425877'
-        window['plugins'].OneSignal.startInit('d5689a9a-30c3-487b-bbae-684ea1c61d4d', '305260425877')
-         .inFocusDisplaying(window['plugins'].OneSignal.OSInFocusDisplayOption.Notification)
-         .handleNotificationOpened(this.onPushOpened)
-         .endInit();
+        
+        // window['plugins'].OneSignal.startInit('d5689a9a-30c3-487b-bbae-684ea1c61d4d', '305260425877')
+        //  .inFocusDisplaying(window['plugins'].OneSignal.OSInFocusDisplayOption.Notification)
+        //  .handleNotificationOpened(this.onPushOpened)
+        //  .endInit();
+
+        (<any> window).plugins.OneSignal.setAppId('d5689a9a-30c3-487b-bbae-684ea1c61d4d');
+        (<any> window).plugins.OneSignal.setNotificationOpenedHandler(this.onPushOpened);
       } catch (err) {
       }
     }

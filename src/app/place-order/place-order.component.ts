@@ -27,6 +27,7 @@ export class PlaceOrderComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe(params => {
       if (this.utilitiesService.isInternatConnectionAvailable()) {
         const id = params.get('id');
+        const company = params.get('company');
         if (id === undefined || id === null) {
           this.length = params.get('length');
           this.width = params.get('width');
@@ -35,15 +36,15 @@ export class PlaceOrderComponent implements OnInit {
           this.utilitiesService.showLoading();
           this.getCompanyList();
         } else {
-          this.getStockDetail(id);
+          this.getStockDetail(id, company);
         }
       }
     });
   }
 
-  getStockDetail(id) {
+  getStockDetail(id, company) {
     this.utilitiesService.showLoading();
-    this.apiService.get('API_search/GetStockdetail?stock_id=' + id).subscribe((response: any) => {
+    this.apiService.get('API_search/GetStockdetail?stock_id=' + id + '&company=' + company).subscribe((response: any) => {
       if (response && response.data) {
         const stockDetail = response.data;
         this.quality = stockDetail.quality;

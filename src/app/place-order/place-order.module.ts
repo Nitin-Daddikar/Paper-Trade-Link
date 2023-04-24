@@ -15,7 +15,7 @@ import { PlaceOrderComponent } from './place-order.component';
     FormsModule,
     RouterModule.forChild([
       {
-        path: ':id',
+        path: ':id/:company',
         component: PlaceOrderComponent
       },
       {

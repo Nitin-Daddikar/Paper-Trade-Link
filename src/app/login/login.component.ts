@@ -162,7 +162,7 @@ export class LoginComponent {
 
   getOneSignalIDs(mobileInfo = 'Rights not given') {
     if (this.utilitiesService.isCordovaAvailable()) {
-      window["plugins"].OneSignal.getIds(function(data) {
+      (<any> window).plugins.OneSignal.getDeviceState(function(data) {
         this.proceedLogin(mobileInfo, data.userId, data.pushToken);
       }.bind(this));
     } else {

@@ -151,7 +151,7 @@ export class NearestSizesComponent implements OnInit {
 
   orderNow(res) {
     if (this.utilitiesService.isInternatConnectionAvailable()) {
-      this.router.navigate(['/place-order/' + res.id]);
+      this.router.navigate(['/place-order/' + res.id + '/' + res.company]);
     }
   }
   

@@ -1,0 +1,8 @@
+ionic cordova build android --prod --release -- -- --packageType=bundle
+
+
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore papertradelink_new.keystore app-release.aab alias_name
+pass:  clarus
+
+// not required below if packge type bundle
+zipalign -v 4 app-release.aab PTL.aab

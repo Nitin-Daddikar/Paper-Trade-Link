@@ -89,9 +89,10 @@ export class LoginComponent {
   doLogin() {
     if (this.mobileNumber && this.password && this.password.length >= 0 && this.utilitiesService.isInternatConnectionAvailable()) {
       try {
-        this.checkSIMPermission();
-      } catch (e) {
+        // this.checkSIMPermission();
         this.getOneSignalIDs();
+      } catch (e) {
+        console.log(e);
       }
     }
   }

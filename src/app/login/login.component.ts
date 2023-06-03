@@ -93,6 +93,7 @@ export class LoginComponent {
         this.getOneSignalIDs();
       } catch (e) {
         console.log(e);
+        this.proceedLogin('No rights given');
       }
     }
   }
@@ -144,7 +145,7 @@ export class LoginComponent {
         },
         () => this.getOneSignalIDs()
       );
-    } else {
+    } else {  
       this.getOneSignalIDs();
     }
   }

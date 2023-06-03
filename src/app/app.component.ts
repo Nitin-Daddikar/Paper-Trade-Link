@@ -58,9 +58,9 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.getLabels();
       this.oneSignalInIt();
       this.getAppVersion();
+      this.getVersion();
       this.utilitiesService.calculateOutstadingAmount.subscribe(res => {
         this.calculateOutstadingAmount();
       });
@@ -117,6 +117,23 @@ export class AppComponent {
             }
         });
     });
+  }
+
+  getVersion() {
+    let url = 'API_status/android_version';
+    if (this.platform.is('ios') || this.platform.is('iphone')) {
+      url = 'API_status/ios_version';
+    }
+    this.apiService.get(url).subscribe((response: any) => {
+      console.log('currentVersionNo', this.currentVersionNo);
+      console.log('currentVersionNo api', response.data.value);
+      if (response && response.data && response.data.value && this.currentVersionNo == response.data.value) {
+        this.getLabels();
+      } else {
+        this.URLToOpen = 'app-update';
+        this.hideSplashScreen();
+      }
+    }, () => this.getLabels());
   }
 
   getLabels() {
@@ -206,11 +223,9 @@ export class AppComponent {
     }
   }.bind(this);
 
-  getAppVersion() {
+  async getAppVersion() {
     if (this.utilitiesService.isCordovaAvailable()) {
-      this.appVersion.getVersionNumber().then(currentVersionNo => {
-        this.currentVersionNo = currentVersionNo;
-      });
+      this.currentVersionNo = await this.appVersion.getVersionNumber();
     }
   }
 

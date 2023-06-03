@@ -1,7 +1,9 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 
-import { Platform, NavController, ModalController, MenuController,
-          ActionSheetController, PopoverController, IonRouterOutlet } from '@ionic/angular';
+import {
+  Platform, NavController, ModalController, MenuController,
+  ActionSheetController, PopoverController, IonRouterOutlet
+} from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { APIService } from './services/api.services';
 import { UtilitiesService } from './services/utilities.services';
@@ -36,9 +38,9 @@ export class AppComponent {
     this.initializeApp();
 
     this.router.events.pipe(filter(event => event instanceof NavigationStart))
-    .subscribe((event: NavigationStart) => {
-      this.firstTime = true;
-    });
+      .subscribe((event: NavigationStart) => {
+        this.firstTime = true;
+      });
     this.backButtonEvent();
   }
 
@@ -50,7 +52,7 @@ export class AppComponent {
   lastTimeBackPress = 0;
   timePeriodToExit = 2000;
   firstTime = false;
-  currentVersionNo = null;
+  currentVersionNo = '1.0.0';
   totalOutstandingAmount = null;
   URLToOpen = '';
 
@@ -58,9 +60,9 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.getLabels();
       this.oneSignalInIt();
       this.getAppVersion();
+      this.getVersion();
       this.utilitiesService.calculateOutstadingAmount.subscribe(res => {
         this.calculateOutstadingAmount();
       });
@@ -70,53 +72,68 @@ export class AppComponent {
   // active hardware back button
   backButtonEvent() {
     this.platform.backButton.subscribe(async () => {
-        try { // close action sheet
-            const element = await this.actionSheetCtrl.getTop();
-            if (element) {
-                element.dismiss();
-                return;
-            }
-        } catch (error) { console.log(error); }
+      try { // close action sheet
+        const element = await this.actionSheetCtrl.getTop();
+        if (element) {
+          element.dismiss();
+          return;
+        }
+      } catch (error) { console.log(error); }
 
-        try { // close popover
-            const element = await this.popoverCtrl.getTop();
-            if (element) {
-                element.dismiss();
-                return;
-            }
-        } catch (error) { console.log(error); }
+      try { // close popover
+        const element = await this.popoverCtrl.getTop();
+        if (element) {
+          element.dismiss();
+          return;
+        }
+      } catch (error) { console.log(error); }
 
-        try { // close modal
-            const element = await this.modalCtrl.getTop();
-            if (element) {
-                element.dismiss();
-                return;
-            }
-        } catch (error) { console.log(error); }
+      try { // close modal
+        const element = await this.modalCtrl.getTop();
+        if (element) {
+          element.dismiss();
+          return;
+        }
+      } catch (error) { console.log(error); }
 
-        try {// close side menu
-            const element = await this.menu.getOpen();
-            if (element) {
-                this.menu.close();
-                return;
-            }
-        } catch (error) { console.log(error); }
+      try {// close side menu
+        const element = await this.menu.getOpen();
+        if (element) {
+          this.menu.close();
+          return;
+        }
+      } catch (error) { console.log(error); }
 
-        this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
-            if (outlet && outlet.canGoBack()) {
-              this.firstTime = true;
-            } else if (!this.firstTime) {
-                if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
-                    navigator['app'].exitApp(); // work in ionic 4
-                } else {
-                  this.utilitiesService.showToast(`Press back again to exit App.`);
-                  this.lastTimeBackPress = new Date().getTime();
-                }
-            } else {
-              this.firstTime = false;
-            }
-        });
+      this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
+        if (outlet && outlet.canGoBack()) {
+          this.firstTime = true;
+        } else if (!this.firstTime) {
+          if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
+            navigator['app'].exitApp(); // work in ionic 4
+          } else {
+            this.utilitiesService.showToast(`Press back again to exit App.`);
+            this.lastTimeBackPress = new Date().getTime();
+          }
+        } else {
+          this.firstTime = false;
+        }
+      });
     });
+  }
+
+  getVersion() {
+    let url = 'API_status/android_version';
+    if (this.platform.is('ios') || this.platform.is('iphone')) {
+      url = 'API_status/ios_version';
+    }
+    this.apiService.get(url).subscribe((response: any) => {
+      if (response && response.data && response.data.value && this.currentVersionNo == response.data.value) {
+        this.getLabels();
+      } else {
+        this.URLToOpen = 'app-update';
+        this.hideSplashScreen();
+      }
+    }, () => this.getLabels());
   }
 
   getLabels() {
@@ -124,50 +141,50 @@ export class AppComponent {
       if (response && response.data) {
         this.utilitiesService.setLabels(response.data);
       }
-    }, () => {},
-    () => {
+    }, () => { },
+      () => {
 
-      if (this.utilitiesService.isCordovaAvailable()) {
-        this.storage.getItem('mobileNumber').then(
-          mobileNumber => {
-            if (mobileNumber) {
-              this.authService.setMobileNumber = mobileNumber;
+        if (this.utilitiesService.isCordovaAvailable()) {
+          this.storage.getItem('mobileNumber').then(
+            mobileNumber => {
+              if (mobileNumber) {
+                this.authService.setMobileNumber = mobileNumber;
 
-              this.storage.getItem('customerId').then(
-                customerId => {
-                  if (customerId) {
-                    this.authService.setCustomerId = customerId;
+                this.storage.getItem('customerId').then(
+                  customerId => {
+                    if (customerId) {
+                      this.authService.setCustomerId = customerId;
 
-                    this.storage.getItem('isLoggedIn').then(
-                      isLoggedIn => {
-                        this.authService.UserLoggedIn = isLoggedIn ? isLoggedIn : false;
-                        this.hideSplashScreen();
-                      },
-                      () => this.hideSplashScreen()
-                    );
+                      this.storage.getItem('isLoggedIn').then(
+                        isLoggedIn => {
+                          this.authService.UserLoggedIn = isLoggedIn ? isLoggedIn : false;
+                          this.hideSplashScreen();
+                        },
+                        () => this.hideSplashScreen()
+                      );
 
-                  } else {
-                    this.hideSplashScreen();
-                  }
-                },
-                () => this.hideSplashScreen()
-              );
+                    } else {
+                      this.hideSplashScreen();
+                    }
+                  },
+                  () => this.hideSplashScreen()
+                );
 
-            } else {
-              this.hideSplashScreen();
-            }
-          },
-          () => this.hideSplashScreen()
-        );
-      } else {
-        // Nitin temp
-        // this.authService.setMobileNumber = '7387533080';
-        // this.authService.setCustomerId = 2168;
-        // this.authService.UserLoggedIn = true;
-        // this.hideSplashScreen();
-      }
+              } else {
+                this.hideSplashScreen();
+              }
+            },
+            () => this.hideSplashScreen()
+          );
+        } else {
+          // Nitin temp
+          // this.authService.setMobileNumber = '7387533080';
+          // this.authService.setCustomerId = 2168;
+          // this.authService.UserLoggedIn = true;
+          // this.hideSplashScreen();
+        }
 
-    });
+      });
   }
 
   hideSplashScreen() {
@@ -184,20 +201,20 @@ export class AppComponent {
       try {
         // clarus.nitin - '7f98b411-2697-4e66-9b79-3711e2d33396', '266760528438'
         // mohit - 'd5689a9a-30c3-487b-bbae-684ea1c61d4d', '305260425877'
-        
+
         // window['plugins'].OneSignal.startInit('d5689a9a-30c3-487b-bbae-684ea1c61d4d', '305260425877')
         //  .inFocusDisplaying(window['plugins'].OneSignal.OSInFocusDisplayOption.Notification)
         //  .handleNotificationOpened(this.onPushOpened)
         //  .endInit();
 
-        (<any> window).plugins.OneSignal.setAppId('d5689a9a-30c3-487b-bbae-684ea1c61d4d');
-        (<any> window).plugins.OneSignal.setNotificationOpenedHandler(this.onPushOpened);
+        (<any>window).plugins.OneSignal.setAppId('d5689a9a-30c3-487b-bbae-684ea1c61d4d');
+        (<any>window).plugins.OneSignal.setNotificationOpenedHandler(this.onPushOpened);
       } catch (err) {
       }
     }
   }
 
-  onPushOpened = function(receivedData) {
+  onPushOpened = function (receivedData) {
     if (receivedData.action && receivedData.action.actionID === 'order_now') {
       const data = receivedData.notification.payload.additionalData;
       this.URLToOpen = `/place-order/${data.height}/${data.width}/${data.gsm}`;
@@ -206,11 +223,9 @@ export class AppComponent {
     }
   }.bind(this);
 
-  getAppVersion() {
+  async getAppVersion() {
     if (this.utilitiesService.isCordovaAvailable()) {
-      this.appVersion.getVersionNumber().then(currentVersionNo => {
-        this.currentVersionNo = currentVersionNo;
-      });
+      this.currentVersionNo = await this.appVersion.getVersionNumber();
     }
   }
 
@@ -224,7 +239,7 @@ export class AppComponent {
           response.data.forEach(company => {
             if (company.summary && company.summary.length > 0) {
               const summary = company.summary;
-              totalAmount += +summary[summary.length-1].Total_summ;
+              totalAmount += +summary[summary.length - 1].Total_summ;
             }
           });
           if (totalAmount > 0) {

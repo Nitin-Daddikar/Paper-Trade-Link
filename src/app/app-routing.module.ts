@@ -32,6 +32,9 @@ const routes: Routes = [
   },
   { path: 'place-order',
     loadChildren: () => import('./place-order/place-order.module').then( m => m.PlaceOrderModule)
+  },
+  { path: 'app-update',
+    loadChildren: () => import('./app-update/app-update.module').then( m => m.AppUpdateModule)
   }
 ];
 

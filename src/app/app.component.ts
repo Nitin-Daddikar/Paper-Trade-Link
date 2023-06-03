@@ -122,18 +122,22 @@ export class AppComponent {
   }
 
   getVersion() {
-    let url = 'API_status/android_version';
-    if (this.platform.is('ios') || this.platform.is('iphone')) {
-      url = 'API_status/ios_version';
-    }
-    this.apiService.get(url).subscribe((response: any) => {
-      if (response && response.data && response.data.value && this.currentVersionNo == response.data.value) {
-        this.getLabels();
-      } else {
-        this.URLToOpen = 'app-update';
-        this.hideSplashScreen();
+    if (this.utilitiesService.isCordovaAvailable()) {
+      let url = 'API_status/android_version';
+      if (this.platform.is('ios') || this.platform.is('iphone')) {
+        url = 'API_status/ios_version';
       }
-    }, () => this.getLabels());
+      this.apiService.get(url).subscribe((response: any) => {
+        if (response && response.data && response.data.value && this.currentVersionNo == response.data.value) {
+          this.getLabels();
+        } else {
+          this.URLToOpen = 'app-update';
+          this.hideSplashScreen();
+        }
+      }, () => this.getLabels());
+    } else {
+      this.getLabels();
+    }
   }
 
   getLabels() {

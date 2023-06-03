@@ -14,7 +14,8 @@
 <ion-content [fullscreen]="true">
     <ion-card>
         <ion-card-header>
-            <ion-card-subtitle color="primary" class="ion-text-center">Please find out bank details as under</ion-card-subtitle>
+            <ion-card-subtitle color="primary" class="ion-text-center">Please find out bank details as
+                under</ion-card-subtitle>
         </ion-card-header>
 
         <ion-card-content>
@@ -74,6 +75,22 @@
                     </ion-row>
                 </ion-grid>
             </ng-container>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="qr_code_details">
+        <ion-card-header>
+            <ion-card-subtitle color="primary" class="ion-text-center">UPI QR Code</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+            <ion-grid>
+                <ion-row>
+                    <ion-col size="12">
+                        <ion-img [src]="qr_code_details" style="width: 280px; margin: 0 auto;"></ion-img>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
         </ion-card-content>
     </ion-card>
 </ion-content>

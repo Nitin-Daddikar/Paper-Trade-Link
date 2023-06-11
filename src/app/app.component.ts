@@ -182,7 +182,7 @@ export class AppComponent {
           );
         } else {
           // Nitin temp
-          // this.authService.setMobileNumber = '7387533080';
+          // this.authService.setMobileNumber = '8087000299';
           // this.authService.setCustomerId = 2168;
           // this.authService.UserLoggedIn = true;
           // this.hideSplashScreen();

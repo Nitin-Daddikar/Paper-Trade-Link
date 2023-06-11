@@ -13,10 +13,13 @@ export class PlaceOrderComponent implements OnInit {
 
   companyList = [];
   companyName = '';
+  company = '';
   quality = '';
   length;
   width;
   gsm;
+  stock_id;
+  gwd;
   noOfSheet;
   delivery = '';
 
@@ -27,7 +30,7 @@ export class PlaceOrderComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe(params => {
       if (this.utilitiesService.isInternatConnectionAvailable()) {
         const id = params.get('id');
-        const company = params.get('company');
+        this.company = params.get('company');
         if (id === undefined || id === null) {
           this.length = params.get('length');
           this.width = params.get('width');
@@ -36,21 +39,23 @@ export class PlaceOrderComponent implements OnInit {
           this.utilitiesService.showLoading();
           this.getCompanyList();
         } else {
-          this.getStockDetail(id, company);
+          this.getStockDetail(id);
         }
       }
     });
   }
 
-  getStockDetail(id, company) {
+  getStockDetail(id) {
     this.utilitiesService.showLoading();
-    this.apiService.get('API_search/GetStockdetail?stock_id=' + id + '&company=' + company).subscribe((response: any) => {
+    this.apiService.get('API_search/GetStockdetail?stock_id=' + id + '&company=' + this.company).subscribe((response: any) => {
       if (response && response.data) {
         const stockDetail = response.data;
         this.quality = stockDetail.quality;
         this.length = stockDetail.size_inch_length;
         this.width = stockDetail.size_inch_width;
         this.gsm = stockDetail.gsm;
+        this.gwd = stockDetail.gwd;
+        this.stock_id = stockDetail.id;
         this.cdr.detectChanges();
         this.getCompanyList();
       } else {
@@ -95,6 +100,9 @@ export class PlaceOrderComponent implements OnInit {
         formData.append('gsm', this.gsm);
         formData.append('qty', this.noOfSheet);
         formData.append('deliv', this.delivery);
+        formData.append('company', this.company);
+        formData.append('gwd', this.gwd);
+        formData.append('stock_id', this.stock_id);
 
         this.apiService.post('API_addorder/add_order', formData).subscribe((res: any) => {
           this.utilitiesService.dismissLoading();

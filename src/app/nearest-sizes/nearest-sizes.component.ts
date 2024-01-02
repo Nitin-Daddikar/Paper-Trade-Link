@@ -31,6 +31,13 @@ export class NearestSizesComponent implements OnInit {
 
   totalResponseTime : any = 0;
 
+  
+	reel_headers : any = null;
+  reel_headersKeys : any = [];
+  reel_searchResult = null;
+  reel_ascSort = true;
+  reel_sortCol = '';
+
   constructor(private utilitiesService: UtilitiesService, private apiService: APIService,  private activatedRoute: ActivatedRoute, private socialSharing: SocialSharing, 
               private authService: AuthService, private cdr: ChangeDetectorRef, private router: Router, private screenshot: Screenshot) { }
 
@@ -72,7 +79,9 @@ export class NearestSizesComponent implements OnInit {
       if (this.length && this.width && this.gsm && this.length > 0 && this.width > 0 && this.gsm > 0) {
         if (this.utilitiesService.isInternatConnectionAvailable()) {
           this.searchResult = null;
+          this.reel_searchResult = null;
           this.ascSort = true;
+          this.reel_headers = null;
           this.sortCol = '';
           this.utilitiesService.showLoading();
           const customerId = this.authService.getCustomerId;
@@ -96,9 +105,9 @@ export class NearestSizesComponent implements OnInit {
                 this.headersWidth = data.headers_width;
                 this.headersKeys = Object.keys(data.headers);
                 // this.sortKey = this.headersKeys[0];
-                this.headersKeys.forEach(element => {
-                  this.search[element] = '';
-                });
+                // this.headersKeys.forEach(element => {
+                //   this.search[element] = '';
+                // });
                 this.searchResult = data.data.list;
                 this.searchResult.map(company => {
                   this.headersKeys.forEach(element => {
@@ -107,6 +116,23 @@ export class NearestSizesComponent implements OnInit {
                 })
               } else {
                 this.searchResult = [];
+              }
+              
+              if (!_.isEmpty(data.data.reel_list) && data.reel_headers) {
+                this.reel_headers = data.reel_headers;
+                this.reel_headersKeys = Object.keys(data.reel_headers);
+                // this.sortKey = this.headersKeys[0];
+                // this.reel_headersKeys.forEach(element => {
+                //   this.search[element] = '';
+                // });
+                this.reel_searchResult = data.data.reel_list;
+                this.reel_searchResult.map(company => {
+                  this.reel_headersKeys.forEach(element => {
+                    company[element] = ''+company[element];
+                  });
+                })
+              } else {
+                this.reel_searchResult = [];
               }
               // this.searchResult = _.sortBy(this.searchResult, [function(o) { return o[this.sortKey] }.bind(this)]);
               // this.companies = _.cloneDeep(this.allCompanies);
@@ -139,9 +165,17 @@ export class NearestSizesComponent implements OnInit {
     this.searchResult = _.orderBy(this.searchResult, this.sortCol, this.ascSort ? 'asc' : 'desc');
   }
 
+  changeReelSort(reel_sortCol) {
+    this.reel_ascSort = !this.reel_ascSort;
+    this.reel_sortCol = reel_sortCol;
+    this.reel_searchResult = _.orderBy(this.reel_searchResult, this.reel_sortCol, this.reel_ascSort ? 'asc' : 'desc');
+  }
+
   reverse() {
     this.ascSort = true;
     this.sortCol = '';
+    this.reel_ascSort = true;
+    this.reel_sortCol = '';
     const oldLen = this.length;
     this.length = this.width;
     this.width = oldLen;

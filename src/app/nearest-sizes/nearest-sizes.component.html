@@ -19,7 +19,8 @@
 <ion-content [fullscreen]="true">
     <ion-card *ngIf="loadPage">
         <ion-card-header>
-            <ion-card-title color="primary" class="ion-text-center">Find Nearest Sizes<br><span style="color: black;    font-size: 16px;">(in Inch)</span></ion-card-title>
+            <ion-card-title color="primary" class="ion-text-center">Find Nearest Sizes<br><span
+                    style="color: black;    font-size: 16px;">(in Inch)</span></ion-card-title>
         </ion-card-header>
 
         <ion-card-content style="padding : 0;">
@@ -29,7 +30,8 @@
                         <ion-item>
                             <ion-label position="stacked" class="font1">Select Product Group</ion-label>
                             <ion-select [(ngModel)]="product_group">
-                                <ion-select-option *ngFor="let product of listProducts" [value]="product.group_name">{{product.group_name}}</ion-select-option>
+                                <ion-select-option *ngFor="let product of listProducts"
+                                    [value]="product.group_name">{{product.group_name}}</ion-select-option>
                             </ion-select>
                         </ion-item>
                     </ion-col>
@@ -38,7 +40,8 @@
                     <ion-col size="5">
                         <ion-item>
                             <ion-label position="stacked" class="font1">Length</ion-label>
-                            <ion-input type="number" [(ngModel)]="length" inputmode="decimal" maxlength="10"></ion-input>
+                            <ion-input type="number" [(ngModel)]="length" inputmode="decimal"
+                                maxlength="10"></ion-input>
                         </ion-item>
                     </ion-col>
                     <ion-col size="2" class="vertical-center">
@@ -68,36 +71,73 @@
                 </ion-row>
             </ion-grid>
 
-            <ng-container *ngIf="searchResult">
-                <div class="ion-text-center" *ngIf="searchResult.length == 0">
+            <ng-container *ngIf="searchResult && reel_searchResult">
+                <div class="ion-text-center" *ngIf="searchResult.length == 0 && reel_searchResult.length == 0">
                     <h3>Results not found in {{totalResponseTime}} seconds</h3>
                 </div>
-                <ng-container *ngIf="searchResult.length > 0">
+                <ng-container *ngIf="searchResult.length > 0 || reel_searchResult.length > 0">
                     <div class="ion-text-center">
                         <h3>Result searching size {{length}} X {{width}} in {{totalResponseTime}} seconds</h3>
                     </div>
 
-                    <div style="overflow-x:auto;">
-                        <table style="border-collapse: collapse;">
-                            <tr>
-                                <th style="min-width: 50px !important;max-width: 50px !important;" *ngFor="let key of headersKeys" class="greyBG" (click)="changeSort(key)">
-                                    {{ headers[key]}}
-                                    <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'" *ngIf="sortCol == key"></ion-icon>
-                                </th>
-                                <th class="greyBG">#</th>
-                            </tr>
-                            <tr *ngFor="let res of searchResult">
-                                <td *ngFor="let key of headersKeys">
-                                    {{ res[key]}}
-                                </td>
-                                <td>
-                                    <div class="primaryBG orderBtn" (click)="orderNow(res)">
-                                        <ion-icon name="cart-outline"></ion-icon>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                    <ng-container *ngIf="searchResult.length > 0">
+                        <ion-label class="font1 ion-text-center w100 table-header ion-margin-top">READY SHEET
+                            SIZES</ion-label>
+                        <div style="overflow-x:auto;">
+
+                            <table style="border-collapse: collapse;">
+                                <tr>
+                                    <th style="min-width: 50px !important;max-width: 50px !important;"
+                                        *ngFor="let key of headersKeys" class="greyBG" (click)="changeSort(key)">
+                                        {{ headers[key]}}
+                                        <ion-icon [name]="ascSort ? 'arrow-down' : 'arrow-up'"
+                                            *ngIf="sortCol == key"></ion-icon>
+                                    </th>
+                                    <th class="greyBG">#</th>
+                                </tr>
+                                <tr *ngFor="let res of searchResult">
+                                    <td *ngFor="let key of headersKeys">
+                                        {{ res[key]}}
+                                    </td>
+                                    <td>
+                                        <div class="primaryBG orderBtn" (click)="orderNow(res)">
+                                            <ion-icon name="cart-outline"></ion-icon>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="searchResult.length > 0 && reel_headers">
+                        <ion-label class="font1 ion-text-center w100 table-header ion-margin-top">REEL TO SHEET SIZES
+                            CONVERSION </ion-label>
+                        <div style="overflow-x:auto;">
+
+                            <table style="border-collapse: collapse;">
+                                <tr>
+                                    <th style="min-width: 50px !important;max-width: 50px !important;"
+                                        *ngFor="let key of reel_headersKeys" class="greyBG"
+                                        (click)="changeReelSort(key)">
+                                        {{ reel_headers[key]}}
+                                        <ion-icon [name]="reel_ascSort ? 'arrow-down' : 'arrow-up'"
+                                            *ngIf="reel_sortCol == key"></ion-icon>
+                                    </th>
+                                    <th class="greyBG">#</th>
+                                </tr>
+                                <tr *ngFor="let res of reel_searchResult">
+                                    <td *ngFor="let key of reel_headersKeys">
+                                        {{ res[key]}}
+                                    </td>
+                                    <td>
+                                        <div class="primaryBG orderBtn" (click)="orderNow(res)">
+                                            <ion-icon name="cart-outline"></ion-icon>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </ng-container>
 
                     <!-- <ion-grid class="resultTable">
                         <ion-row>

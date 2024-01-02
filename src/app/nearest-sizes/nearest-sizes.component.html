@@ -71,7 +71,7 @@
                 </ion-row>
             </ion-grid>
 
-            <ng-container *ngIf="searchResult && reel_searchResult">
+            <ng-container *ngIf="searchResult || reel_searchResult">
                 <div class="ion-text-center" *ngIf="searchResult.length == 0 && reel_searchResult.length == 0">
                     <h3>Results not found in {{totalResponseTime}} seconds</h3>
                 </div>
@@ -109,7 +109,7 @@
                         </div>
                     </ng-container>
 
-                    <ng-container *ngIf="searchResult.length > 0 && reel_headers">
+                    <ng-container *ngIf="reel_searchResult.length > 0 && reel_headers">
                         <ion-label class="font1 ion-text-center w100 table-header ion-margin-top">REEL TO SHEET SIZES
                             CONVERSION </ion-label>
                         <div style="overflow-x:auto;">

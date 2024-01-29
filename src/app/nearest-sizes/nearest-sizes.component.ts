@@ -19,8 +19,8 @@ export class NearestSizesComponent implements OnInit {
   gsm: any;
   product_group: any;
   listProducts = [];
-	headers : any = {};
-  headersKeys : any = [];
+  headers: any = {};
+  headersKeys: any = [];
   headersWidth = {};
 
   searchResult = null;
@@ -29,17 +29,19 @@ export class NearestSizesComponent implements OnInit {
 
   loadPage = false;
 
-  totalResponseTime : any = 0;
+  totalResponseTime: any = 0;
 
-  
-	reel_headers : any = null;
-  reel_headersKeys : any = [];
+
+  reel_headers: any = null;
+  reel_headersKeys: any = [];
   reel_searchResult = null;
   reel_ascSort = true;
   reel_sortCol = '';
 
-  constructor(private utilitiesService: UtilitiesService, private apiService: APIService,  private activatedRoute: ActivatedRoute, private socialSharing: SocialSharing, 
-              private authService: AuthService, private cdr: ChangeDetectorRef, private router: Router, private screenshot: Screenshot) { }
+  reelNote = null;
+
+  constructor(private utilitiesService: UtilitiesService, private apiService: APIService, private activatedRoute: ActivatedRoute, private socialSharing: SocialSharing,
+    private authService: AuthService, private cdr: ChangeDetectorRef, private router: Router, private screenshot: Screenshot) { }
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
@@ -62,16 +64,16 @@ export class NearestSizesComponent implements OnInit {
   loadMasters() {
     this.listProducts = [];
     this.apiService.get('API_search/getMasters')
-    .subscribe((response: any) => {
-      if (response && response.data) {
-        this.listProducts = response.data.product_group;
+      .subscribe((response: any) => {
+        if (response && response.data) {
+          this.listProducts = response.data.product_group;
+          this.loadPage = true;
+          this.cdr.detectChanges();
+        }
+      }, () => {
         this.loadPage = true;
         this.cdr.detectChanges();
-      } 
-    }, () => {
-      this.loadPage = true;
-      this.cdr.detectChanges();
-    });
+      });
   }
 
   search() {
@@ -98,57 +100,58 @@ export class NearestSizesComponent implements OnInit {
           var date = new Date();
           let startSeconds = date.valueOf();
           this.apiService.post('API_search/search_dynamic_column_wise', formData)
-          .subscribe((data: any) => {
-            if (!_.isEmpty(data) && !_.isEmpty(data.data) && data.data.stock_access != undefined && data.data.stock_access != 1) {
-              if (!_.isEmpty(data.data.list)) {
-                this.headers = data.headers;
-                this.headersWidth = data.headers_width;
-                this.headersKeys = Object.keys(data.headers);
-                // this.sortKey = this.headersKeys[0];
-                // this.headersKeys.forEach(element => {
-                //   this.search[element] = '';
-                // });
-                this.searchResult = data.data.list;
-                this.searchResult.map(company => {
-                  this.headersKeys.forEach(element => {
-                    company[element] = ''+company[element];
-                  });
-                })
+            .subscribe((data: any) => {
+              if (!_.isEmpty(data) && !_.isEmpty(data.data) && data.data.stock_access != undefined && data.data.stock_access != 1) {
+                if (!_.isEmpty(data.data.list)) {
+                  this.headers = data.headers;
+                  this.headersWidth = data.headers_width;
+                  this.headersKeys = Object.keys(data.headers);
+                  // this.sortKey = this.headersKeys[0];
+                  // this.headersKeys.forEach(element => {
+                  //   this.search[element] = '';
+                  // });
+                  this.searchResult = data.data.list;
+                  this.searchResult.map(company => {
+                    this.headersKeys.forEach(element => {
+                      company[element] = '' + company[element];
+                    });
+                  })
+                } else {
+                  this.searchResult = [];
+                }
+
+                if (!_.isEmpty(data.data.reel_list) && data.reel_headers) {
+                  this.getOptions();
+                  this.reel_headers = data.reel_headers;
+                  this.reel_headersKeys = Object.keys(data.reel_headers);
+                  // this.sortKey = this.headersKeys[0];
+                  // this.reel_headersKeys.forEach(element => {
+                  //   this.search[element] = '';
+                  // });
+                  this.reel_searchResult = data.data.reel_list;
+                  this.reel_searchResult.map(company => {
+                    this.reel_headersKeys.forEach(element => {
+                      company[element] = '' + company[element];
+                    });
+                  })
+                } else {
+                  this.reel_searchResult = [];
+                }
+                // this.searchResult = _.sortBy(this.searchResult, [function(o) { return o[this.sortKey] }.bind(this)]);
+                // this.companies = _.cloneDeep(this.allCompanies);
+                this.cdr.detectChanges();
               } else {
-                this.searchResult = [];
+                this.utilitiesService.presentErrorAlert();
               }
-              
-              if (!_.isEmpty(data.data.reel_list) && data.reel_headers) {
-                this.reel_headers = data.reel_headers;
-                this.reel_headersKeys = Object.keys(data.reel_headers);
-                // this.sortKey = this.headersKeys[0];
-                // this.reel_headersKeys.forEach(element => {
-                //   this.search[element] = '';
-                // });
-                this.reel_searchResult = data.data.reel_list;
-                this.reel_searchResult.map(company => {
-                  this.reel_headersKeys.forEach(element => {
-                    company[element] = ''+company[element];
-                  });
-                })
-              } else {
-                this.reel_searchResult = [];
-              }
-              // this.searchResult = _.sortBy(this.searchResult, [function(o) { return o[this.sortKey] }.bind(this)]);
-              // this.companies = _.cloneDeep(this.allCompanies);
-              this.cdr.detectChanges();
-            } else {
+              this.utilitiesService.dismissLoading();
+
+              var date = new Date();
+              let endSeconds = date.valueOf();
+              this.totalResponseTime = this.millisToMinutesAndSeconds(endSeconds - startSeconds);
+            }, () => {
               this.utilitiesService.presentErrorAlert();
-            }
-            this.utilitiesService.dismissLoading();
-            
-            var date = new Date();
-            let endSeconds = date.valueOf();
-            this.totalResponseTime = this.millisToMinutesAndSeconds(endSeconds-startSeconds);
-          }, () => {
-            this.utilitiesService.presentErrorAlert();
-            this.utilitiesService.dismissLoading();
-          });
+              this.utilitiesService.dismissLoading();
+            });
         }
       } else {
         this.utilitiesService.presentErrorAlert('Error', 'Length, Width and GSM can\'t be empty and less than or equal to zero.');
@@ -188,6 +191,12 @@ export class NearestSizesComponent implements OnInit {
     }
   }
 
+  orderReelNow(res) {
+    if (this.utilitiesService.isInternatConnectionAvailable()) {
+      this.router.navigate(['/place-order/reel-order/' + res.id + '/' + res.company + '/yes/' + this.width]);
+    }
+  }
+
   shareScreenshot() {
     this.screenshot.URI(80).then((uri) => {
       this.socialSharing.share('', '', uri.URI);
@@ -200,5 +209,19 @@ export class NearestSizesComponent implements OnInit {
 
   millisToMinutesAndSeconds(millis) {
     return ((millis % 60000) / 1000).toFixed(2);
+  }
+
+  getOptions() {
+    this.reelNote = null;
+    this.apiService.get('API_status/option_masters').subscribe((res: any) => {
+      const options = res.data;
+      if (options) {
+        options.forEach(option => {
+          if (option.option == 'reel_note') {
+            this.reelNote = option.value;
+          }
+        });
+      }
+    }, () => { });
   }
 }

@@ -21,7 +21,11 @@ import { PlaceOrderComponent } from './place-order.component';
       {
         path: ':length/:width/:gsm',
         component: PlaceOrderComponent
-      }
+      },
+      {
+        path: 'reel-order/:id/:company/:isreel/:searchedWidth',
+        component: PlaceOrderComponent
+      },
     ])
   ]
 })

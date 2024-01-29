@@ -109,7 +109,7 @@
                         </div>
                     </ng-container>
 
-                    <ng-container *ngIf="searchResult.length > 0 && reel_headers">
+                    <ng-container *ngIf="reel_searchResult.length > 0 && reel_headers">
                         <ion-label class="font1 ion-text-center w100 table-header ion-margin-top">REEL TO SHEET SIZES
                             CONVERSION </ion-label>
                         <div style="overflow-x:auto;">
@@ -130,13 +130,16 @@
                                         {{ res[key]}}
                                     </td>
                                     <td>
-                                        <div class="primaryBG orderBtn" (click)="orderNow(res)">
+                                        <div class="primaryBG orderBtn" (click)="orderReelNow(res)">
                                             <ion-icon name="cart-outline"></ion-icon>
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
+
+                        <ion-label *ngIf="reelNote" class="font1 w100 floatL ion-margin-top ion-padding"
+                            color="primary"><b>Note :- "{{reelNote}}"</b></ion-label>
                     </ng-container>
 
                     <!-- <ion-grid class="resultTable">
@@ -154,7 +157,7 @@
                         </ion-row>
                     </ion-grid> -->
 
-                    <ion-grid>
+                    <ion-grid class="w100 floatL">
                         <ion-row class="ion-align-items-center">
                             <ion-col size="12" class="ion-text-center">
                                 <ion-button shape="round" (click)="reverse()">

@@ -22,15 +22,21 @@ export class PlaceOrderComponent implements OnInit {
   gwd;
   noOfSheet;
   delivery = '';
+  isReel = false;
+  searchedWidth = '';
 
   constructor(private utilitiesService: UtilitiesService, private apiService: APIService, private cdr: ChangeDetectorRef,
-              private authService: AuthService, private activatedRoute: ActivatedRoute) { }
+    private authService: AuthService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
       if (this.utilitiesService.isInternatConnectionAvailable()) {
         const id = params.get('id');
         this.company = params.get('company');
+        this.isReel = params.get('isreel') === 'yes';
+        if (this.isReel) {
+          this.searchedWidth = params.get('searchedWidth');
+        }
         if (id === undefined || id === null) {
           this.length = params.get('length');
           this.width = params.get('width');
@@ -56,6 +62,9 @@ export class PlaceOrderComponent implements OnInit {
         this.gsm = stockDetail.gsm;
         this.gwd = stockDetail.gwd;
         this.stock_id = stockDetail.id;
+        if (this.isReel) {
+          this.width = (+this.searchedWidth).toFixed(2);
+        }
         this.cdr.detectChanges();
         this.getCompanyList();
       } else {
@@ -103,6 +112,8 @@ export class PlaceOrderComponent implements OnInit {
         formData.append('company', this.company);
         formData.append('gwd', this.gwd);
         formData.append('stock_id', this.stock_id);
+        formData.append('is_reel', this.isReel ? 'Yes' : 'No');
+        
 
         this.apiService.post('API_addorder/add_order', formData).subscribe((res: any) => {
           this.utilitiesService.dismissLoading();

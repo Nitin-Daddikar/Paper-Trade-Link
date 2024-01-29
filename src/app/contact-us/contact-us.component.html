@@ -21,6 +21,8 @@
             <div class="ion-text-center">{{ 'addess' | translate: 'contact_us' }}</div><br>
             <div class="ion-text-center">{{ 'mobile' | translate: 'contact_us' }}</div><br>
             <div class="ion-text-center">{{ 'email' | translate: 'contact_us' }}</div>
+            <b><ion-label *ngIf="location" class="ion-text-center w100 floatL ion-margin-top ion-margin-bottom" (click)="openLocation()"
+                    color="primary">View Location</ion-label></b>
         </ion-card-content>
     </ion-card>
 </ion-content>

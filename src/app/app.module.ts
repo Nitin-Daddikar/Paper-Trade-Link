@@ -11,6 +11,7 @@ import { Sim } from '@ionic-native/sim/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { Screenshot } from '@ionic-native/screenshot/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -41,7 +42,8 @@ import { AuthService } from './services/auth.service';
     Sim,
     AppVersion,
     Screenshot,
-    SocialSharing
+    SocialSharing,
+    InAppBrowser
   ],
   bootstrap: [AppComponent]
 })

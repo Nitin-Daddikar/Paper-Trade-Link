@@ -216,13 +216,14 @@ export class AppComponent {
     }
   }
 
-  onPushOpened = function(receivedData) {
-    if (receivedData.action && receivedData.action.actionID === 'order_now') {
-      const data = receivedData.notification.payload.additionalData;
-      this.URLToOpen = `/place-order/${data.height}/${data.width}/${data.gsm}`;
-    } else {
-      this.URLToOpen = '/broadcast-list';
-    }
+  onPushOpened = function (receivedData) {
+    // if (receivedData.action && receivedData.action.actionID === 'order_now') {
+    //   const data = receivedData.notification.payload.additionalData;
+    //   this.URLToOpen = `/place-order/${data.height}/${data.width}/${data.gsm}`;
+    // } else {
+    //   this.URLToOpen = '/broadcast-list';
+    // }
+    this.URLToOpen = '/broadcast-list';
   }.bind(this);
 
   async getAppVersion() {

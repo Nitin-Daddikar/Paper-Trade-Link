@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { UtilitiesService } from '../services/utilities.services';
 import { APIService } from '../services/api.services';
 import { AuthService } from '../services/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-place-order',
@@ -24,9 +24,15 @@ export class PlaceOrderComponent implements OnInit {
   delivery = '';
   isReel = false;
   searchedWidth = '';
+  confirmDetails = false;
+  visibleContent = 'details';
+
+  headers = [];
+  headersKeys = [];
+  listRes = null;
 
   constructor(private utilitiesService: UtilitiesService, private apiService: APIService, private cdr: ChangeDetectorRef,
-    private authService: AuthService, private activatedRoute: ActivatedRoute) { }
+    private authService: AuthService, private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
@@ -46,6 +52,19 @@ export class PlaceOrderComponent implements OnInit {
           this.getCompanyList();
         } else {
           this.getStockDetail(id);
+        }
+
+        try {
+          this.headers = this.utilitiesService.headers;
+          this.headersKeys = Object.keys(this.headers);
+          this.listRes = this.utilitiesService.res;
+          if (!(this.headers && this.headersKeys && this.listRes)) {
+            this.confirmDetails = true;
+            this.visibleContent = 'place_order';
+          }
+        } catch (e) {
+          this.confirmDetails = true;
+          this.visibleContent = 'place_order';
         }
       }
     });
@@ -113,13 +132,13 @@ export class PlaceOrderComponent implements OnInit {
         formData.append('gwd', this.gwd);
         formData.append('stock_id', this.stock_id);
         formData.append('is_reel', this.isReel ? 'Yes' : 'No');
-        
+
 
         this.apiService.post('API_addorder/add_order', formData).subscribe((res: any) => {
           this.utilitiesService.dismissLoading();
           if (res && res.data) {
             this.utilitiesService.presentErrorAlert('New Order Added', 'Your order is placed successfully.');
-            this.resetForm();
+            this.router.navigate([`/nearest-sizes`]);
           } else {
             this.utilitiesService.presentErrorAlert('New Order failed', 'Your order is failed. Try again.');
           }
@@ -141,5 +160,11 @@ export class PlaceOrderComponent implements OnInit {
     this.gsm = null;
     this.noOfSheet = null;
     this.delivery = '';
+  }
+
+  onPlaceOrderHeaderClick() {
+    if (this.confirmDetails) {
+      this.visibleContent = 'place_order';
+    }
   }
 }

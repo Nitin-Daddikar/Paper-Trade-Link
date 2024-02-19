@@ -7,21 +7,50 @@
                 </ion-button>
             </ion-menu-toggle>
         </ion-buttons>
-        <ion-title start>Place New Order</ion-title>
+        <ion-title start>{{visibleContent == 'details' ? 'Order Details' : 'Place New Order' }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <ion-card>
-        <ion-card-header>
-            <ion-card-title color="primary" class="ion-text-center">Place New Order</ion-card-title>
+    <ion-card *ngIf="headersKeys && headers && listRes">
+        <ion-card-header (click)="visibleContent = 'details'">
+            <ion-card-title color="primary">Order Details <ion-icon
+                    [attr.name]="visibleContent == 'details' ? 'chevron-down-outline' : 'chevron-forward-outline'"
+                    class="ion-float-right"></ion-icon></ion-card-title>
         </ion-card-header>
 
-        <ion-card-content>
+        <ion-card-content *ngIf="visibleContent == 'details'">
+
+            <ng-container *ngFor="let key of headersKeys">
+                <p class="ion-padding-top"></p>
+                <ion-label><b>{{ headers[key] }} : </b> {{ listRes[key] }}</ion-label>
+            </ng-container>
+
+
+            <ion-grid class="ion-padding-top">
+                <ion-row class="ion-align-items-right">
+                    <ion-col size="12" class="ion-text-right">
+                        <ion-button expand="block" color="primary"
+                            (click)="confirmDetails = true; visibleContent = 'place_order'"> Proceed to order</ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+
+    </ion-card>
+    <ion-card>
+        <ion-card-header (click)="onPlaceOrderHeaderClick()">
+            <ion-card-title color="primary">Place New Order <ion-icon
+                    [attr.name]="visibleContent == 'place_order' ? 'chevron-down-outline' : 'chevron-forward-outline'"
+                    class="ion-float-right"></ion-icon></ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content *ngIf="visibleContent == 'place_order'">
             <ion-label>Company Name <span class="dangerColor font1-2">*</span></ion-label>
             <ion-item>
                 <ion-select placeholder="Select Company" [(ngModel)]="companyName">
-                    <ion-select-option *ngFor="let company of companyList" [value]="company.id">{{company.company_name}}</ion-select-option>
+                    <ion-select-option *ngFor="let company of companyList"
+                        [value]="company.id">{{company.company_name}}</ion-select-option>
                 </ion-select>
             </ion-item>
 

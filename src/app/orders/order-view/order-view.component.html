@@ -7,7 +7,7 @@
                 </ion-button>
             </ion-menu-toggle>
         </ion-buttons>
-        <ion-title start>Challan Details</ion-title>
+        <ion-title start>Order Details</ion-title>
         <ion-buttons slot="primary">
             <ion-button color="light" (click)="shareScreenshot()">
                 <ion-icon slot="end" name="share-social-outline"></ion-icon>
@@ -18,8 +18,12 @@
 
 <ion-content [fullscreen]="true">
     <ion-card>
+        <div *ngIf="ordersDetailsList && ordersDetailsList.length > 0 && ordersDetailsList[0].status == 'P'" class="edit-icon-div" (click)="editQuantity($event, ordersDetailsList[0])">
+            <ion-img class="edit-icon"
+                src='assets/icon/edit.png'></ion-img>
+        </div>
         <ion-card-header>
-            <ion-card-title color="primary" class="ion-text-center">Challan Details</ion-card-title>
+            <ion-card-title color="primary" class="ion-text-center">Order Details</ion-card-title>
         </ion-card-header>
 
         <ng-container *ngIf="ordersDetailsList && ordersDetailsList.length > 0">
@@ -30,13 +34,13 @@
                             <ion-label><b>Date</b></ion-label>
                         </ion-col>
                         <ion-col size="4">
-                            <ion-label>: {{ordersDetailsList[0].Date_challan}}</ion-label>
+                            <ion-label>: {{ordersDetailsList[0].Date_order}}</ion-label>
                         </ion-col>
                         <ion-col size="3">
-                            <ion-label><b>Challan No</b></ion-label>
+                            <ion-label><b>Order No</b></ion-label>
                         </ion-col>
                         <ion-col size="3">
-                            <ion-label>: {{ordersDetailsList[0].challan_no}}</ion-label>
+                            <ion-label>: {{ordersDetailsList[0].id}}</ion-label>
                         </ion-col>
                     </ion-row>
                 </ion-grid>
@@ -46,13 +50,14 @@
                         <ion-col size="3" class="primaryBG ion-text-center">Quality</ion-col>
                         <ion-col size="3" class="primaryBG ion-text-center">Size in INCH</ion-col>
                         <ion-col size="3" class="primaryBG ion-text-center">GSM</ion-col>
-                        <ion-col size="3" class="primaryBG ion-text-center">No of sheets</ion-col>
+                        <ion-col size="3" class="primaryBG ion-text-center">Qty</ion-col>
                     </ion-row>
                     <ion-row *ngFor="let order of ordersDetailsList">
                         <ion-col size="3" class="ion-text-center">{{order.quality}}</ion-col>
-                        <ion-col size="3" class="ion-text-center">{{order.size_inch_length}} X {{order.size_inch_width}}</ion-col>
+                        <ion-col size="3" class="ion-text-center">{{order.size_inch_length}} X
+                            {{order.size_inch_width}}</ion-col>
                         <ion-col size="3" class="ion-text-center">{{order.gsm}}</ion-col>
-                        <ion-col size="3" class="ion-text-center">{{order.sheets}}</ion-col>
+                        <ion-col size="3" class="ion-text-center">{{order.qty}}</ion-col>
                     </ion-row>
                 </ion-grid>
                 <ion-grid>
@@ -69,14 +74,16 @@
                             <ion-label><b>Status</b></ion-label>
                         </ion-col>
                         <ion-col size="9">
-                            <ion-label [color]="ordersDetailsList[0].status == 'PENDING' ? 'danger' : 'success'">: <b>{{ordersDetailsList[0].status}}</b></ion-label>
+                            <ion-label [color]="ordersDetailsList[0].status != 'B' ? 'danger' : 'success'">:
+                                <b>{{getStatusLabel(ordersDetailsList[0].status)}}</b></ion-label>
                         </ion-col>
                     </ion-row>
                 </ion-grid>
 
                 <ion-grid *ngIf="mobileNumber" class="ion-padding-top">
                     <ion-row class="ion-align-items-center">
-                        <ion-label color="primary" class="ion-text-center" style="width:100%;"><b>To track delivery status of the challan</b></ion-label>
+                        <ion-label color="primary" class="ion-text-center" style="width:100%;"><b>To track delivery
+                                status of the order</b></ion-label>
                         <ion-col size="12" class="ion-text-center">
                             <ion-icon name="call" color="success" class="font2-5" (click)="callNumber()"></ion-icon>
                         </ion-col>

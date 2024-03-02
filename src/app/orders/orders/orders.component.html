@@ -7,7 +7,7 @@
                 </ion-button>
             </ion-menu-toggle>
         </ion-buttons>
-        <ion-title start>Challans</ion-title>
+        <ion-title start>Orders</ion-title>
         <ion-buttons slot="primary">
             <ion-button color="light" (click)="shareScreenshot()">
                 <ion-icon slot="end" name="share-social-outline"></ion-icon>
@@ -23,7 +23,7 @@
     <ion-card>
         <ion-card-header>
             <ion-card-subtitle color="primary" class="ion-text-center">Only Last 30 days transaction will be
-                displayed<br>To track delivery status of the challan</ion-card-subtitle>
+                displayed<br>To track delivery status of the order</ion-card-subtitle>
         </ion-card-header>
 
         <ion-card-content>
@@ -38,18 +38,23 @@
                 <ion-item *ngFor="let order of ordersList" class="order">
                     <ion-grid>
                         <ion-row (click)="openOrder(order)">
+                            <div *ngIf="order.status == 'P'" class="edit-icon-div"
+                                (click)="editQuantity($event, order)">
+                                <ion-img class="edit-icon" src='assets/icon/edit.png'></ion-img>
+                            </div>
                             <ion-col size="3">
-                                <ion-img *ngIf="order.status != 'PENDING'" src='assets/icon/delivered.png'
+                                <ion-img *ngIf="order.status == 'B'" src='assets/icon/delivered.png'
                                     class="horizontal-center"></ion-img>
-                                <ion-img *ngIf="order.status == 'PENDING'" src='assets/icon/pending.png'
+                                <ion-img *ngIf="order.status != 'B'" src='assets/icon/pending.png'
                                     class="horizontal-center"></ion-img>
                             </ion-col>
                             <ion-col size="9">
-                                <ion-label><b>Challan No : </b>{{order.challan_no}}</ion-label>
-                                <ion-label><b>Date : </b>{{order.Date_challan}}</ion-label>
+                                <ion-label><b>Order No : </b>{{order.id}}</ion-label>
+                                <ion-label><b>Date : </b>{{order.Date_order}}</ion-label>
+                                <ion-label><b>Qty : </b>{{order.qty}}</ion-label>
                                 <ion-label><b>Delivery at : </b>{{order.delivery_at}}</ion-label>
                                 <ion-label><b>Status : </b><span
-                                        [ngClass]="order.status == 'PENDING' ? 'dangerColor' : 'successColor'">{{order.status}}</span></ion-label>
+                                        [ngClass]="order.status == 'B' ? 'successColor' : 'dangerColor'">{{getStatusLabel(order.status)}}</span></ion-label>
                             </ion-col>
                         </ion-row>
                     </ion-grid>

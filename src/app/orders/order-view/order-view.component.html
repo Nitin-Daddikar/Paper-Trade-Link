@@ -18,9 +18,9 @@
 
 <ion-content [fullscreen]="true">
     <ion-card>
-        <div *ngIf="ordersDetailsList && ordersDetailsList.length > 0 && ordersDetailsList[0].status == 'P'" class="edit-icon-div" (click)="editQuantity($event, ordersDetailsList[0])">
-            <ion-img class="edit-icon"
-                src='assets/icon/edit.png'></ion-img>
+        <div *ngIf="ordersDetailsList && ordersDetailsList.length > 0 && ordersDetailsList[0].status == 'P'"
+            class="edit-icon-div" (click)="editQuantity($event, ordersDetailsList[0])">
+            <ion-img class="edit-icon" src='assets/icon/edit.png'></ion-img>
         </div>
         <ion-card-header>
             <ion-card-title color="primary" class="ion-text-center">Order Details</ion-card-title>
@@ -86,6 +86,15 @@
                                 status of the order</b></ion-label>
                         <ion-col size="12" class="ion-text-center">
                             <ion-icon name="call" color="success" class="font2-5" (click)="callNumber()"></ion-icon>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid *ngIf="ordersDetailsList && ordersDetailsList.length > 0 && ordersDetailsList[0].status == 'P'">
+                    <ion-row class="ion-align-items-center">
+                        <ion-col size="12" class="ion-text-center">
+                            <ion-button shape="round" (click)="cancelOrder()">
+                                <ion-icon name="close-outline"></ion-icon> Cancel Order
+                            </ion-button>
                         </ion-col>
                     </ion-row>
                 </ion-grid>

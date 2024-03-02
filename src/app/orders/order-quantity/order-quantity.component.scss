@@ -1,0 +1,37 @@
+// ::ng-deep #task-filter-content .inner-scroll {
+//     display: flex;
+//     flex-direction: column;
+//     overflow: hidden;
+// }
+// .scrollable-child {
+//     overflow-y: auto;
+//     margin-left: auto;
+//     order: 2;
+// }
+.filtertileDiv {
+    // position: absolute;
+    // top: 0;
+    // left: 0;
+    border-bottom: 1px solid #e8e7ec;
+}
+
+ion-item {
+    --inner-padding-start: 0vw;
+    --padding-start: 0vw;
+}
+
+.filter-name-tile {
+    padding-left: 3vw;
+    height: 15vw;
+    background: #e8e7ec;
+    margin-bottom: 0.5vw;
+    color: #696666;
+    &.selected {
+        color: black;
+        background: white;
+    }
+}
+
+.dangerColor {
+    color: var(--ion-color-danger);
+}

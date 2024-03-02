@@ -1,0 +1,36 @@
+<!-- <ion-header translucent>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="clearFilters()">
+                <ion-icon class="tenx-list-icon" color="dark" src="assets/icon/clear-filter.svg"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title class="headerFont fontSB pr-0 pl-0 ion-text-center">Update Qunatity</ion-title>
+
+        <ion-buttons slot="end">
+            <ion-icon slot="icon-only" name="close" (click)="closeModal(true)"></ion-icon>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header> -->
+
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title class="headerFont fontSB pr-0 pl-0 ion-text-center">Update Qunatity</ion-title>
+        <ion-buttons slot="end">
+            <ion-icon slot="icon-only" name="close" (click)="closeModal(true)"></ion-icon>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content id="task-filter-content">
+    <div class="ion-float-left ion-padding w100">
+        <ion-label>Enter Qunatity <span class="dangerColor font1-2">*</span></ion-label>
+        <ion-item>
+            <ion-input type="number" [(ngModel)]="quantity" placeholder="Enter Qunatity" maxlength="10"></ion-input>
+        </ion-item>
+    </div>
+
+</ion-content>
+<ion-button class="tenx-button-right fontSB mainButton zindex100 m-0"
+    (click)="closeModal()"><span>Update</span></ion-button>

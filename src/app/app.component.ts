@@ -128,6 +128,7 @@ export class AppComponent {
         url = 'API_status/ios_version';
       }
       this.apiService.get(url).subscribe((response: any) => {
+        this.utilitiesService.updateURL = response && response.update_url ? response.update_url : null;
         if (response && response.data && response.data.value && this.currentVersionNo == response.data.value) {
           this.getLabels();
         } else {

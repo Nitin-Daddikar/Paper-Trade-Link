@@ -21,6 +21,8 @@ export class UtilitiesService {
   headers: any = [];
   res: any = null;
 
+  updateURL = "";
+
   constructor(private network: Network, private toastCtrl: ToastController, private alertCtrl: AlertController,
     private loadingCtrl: LoadingController) { }
 

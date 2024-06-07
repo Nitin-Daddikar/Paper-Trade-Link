@@ -1,0 +1,20 @@
+
+
+#radio-inputs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    input {
+        margin-right: 5px;
+
+        &:focus-visible {
+            outline: none;
+        }
+    }
+
+    label {
+        color: black;
+    }
+
+}

@@ -43,6 +43,53 @@ th {
 
 
 .table-header {
-    display: block;
+    display: flex;
     font-weight: 700;
+    justify-content: center;
+    gap: 10px;
+
+    ion-img {
+        width: 20px;
+    }
+}
+
+#radio-inputs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    input {
+        margin-right: 5px;
+
+        &:focus-visible {
+            outline: none;
+        }
+    }
+
+    label {
+        color: black;
+    }
+
+}
+
+.cart-badge {
+    top: 0px;
+    position: absolute;
+    background: white;
+    color: red;
+    z-index: 1000;
+    font-size: 10px;
+    border-radius: 10px;
+    right: -8px;
+}
+
+#go-to-cart-button {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+ion-card {
+    margin-bottom: 70px;
 }

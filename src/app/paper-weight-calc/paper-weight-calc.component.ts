@@ -16,14 +16,15 @@ export class PaperWeightCalcComponent implements OnInit {
   wgt: any;
   rateSheets: any;
   ratePerSheet: any;
+  searchSizeBy = "Inch";
 
   constructor() { }
 
   ngOnInit() {}
 
   calc() {
-    const len = this.length;
-    const wed = this.width;
+    const len = this.searchSizeBy == "Inch" ? this.length : this.length / 2.54;
+    const wed = this.searchSizeBy == "Inch" ? this.width : this.width / 2.54;
     const gsm = this.gsm;
     const qty = this.qty;
     const kgs = this.kgs;

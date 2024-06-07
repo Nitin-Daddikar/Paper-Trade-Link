@@ -19,6 +19,7 @@ export class UtilitiesService {
   calculateOutstadingAmount = new Subject<any>();
 
   headers: any = [];
+  cart: any = [];
   res: any = null;
 
   updateURL = "";
@@ -113,7 +114,7 @@ export class UtilitiesService {
   async presentErrorAlert(header?, subHeader?) {
     const alert = await this.alertCtrl.create({
       header: header ? header : this.generalErrorObj.header,
-      subHeader: subHeader ? subHeader : this.generalErrorObj.subHeader,
+      message: subHeader ? subHeader : this.generalErrorObj.subHeader,
       buttons: [{
         text: 'Ok',
         role: 'cancel',

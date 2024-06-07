@@ -45,7 +45,9 @@
                     </ion-row>
                 </ion-grid>
 
-                <ion-grid class="resultTable ion-padding-bottom ion-padding-top">
+                <ion-label class="ion-text-center d-block" style="width:100%; color: green;"><b>BOOKED ORDER
+                        DETAILS</b></ion-label>
+                <ion-grid class="resultTable ion-padding-bottom pt-0">
                     <ion-row>
                         <ion-col size="3" class="primaryBG ion-text-center">Quality</ion-col>
                         <ion-col size="3" class="primaryBG ion-text-center">Size in INCH</ion-col>
@@ -60,6 +62,26 @@
                         <ion-col size="3" class="ion-text-center">{{order.qty}}</ion-col>
                     </ion-row>
                 </ion-grid>
+
+                <ng-container *ngIf="searchHistoryDetails">
+                    <ion-label color="primary" class="ion-text-center d-block" style="width:100%;"><b>YOUR SEARCH
+                            SIZE</b></ion-label>
+                    <ion-grid class="resultTable ion-padding-bottom pt-0">
+                        <ion-row>
+                            <ion-col size="3" class="primaryBG ion-text-center">Group</ion-col>
+                            <ion-col size="3" class="primaryBG ion-text-center">Size</ion-col>
+                            <ion-col size="3" class="primaryBG ion-text-center">GSM</ion-col>
+                            <ion-col size="3" class="primaryBG ion-text-center">Qty</ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3" class="ion-text-center">{{searchHistoryDetails.product_group}}</ion-col>
+                            <ion-col size="3" class="ion-text-center">{{searchHistoryDetails.size_in_inch}}</ion-col>
+                            <ion-col size="3" class="ion-text-center">{{searchHistoryDetails.gsm}}</ion-col>
+                            <ion-col size="3" class="ion-text-center">{{searchHistoryDetails.qty}}</ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ng-container>
+
                 <ion-grid>
                     <ion-row>
                         <ion-col size="3">
@@ -89,7 +111,8 @@
                         </ion-col>
                     </ion-row>
                 </ion-grid>
-                <ion-grid *ngIf="ordersDetailsList && ordersDetailsList.length > 0 && ordersDetailsList[0].status == 'P'">
+                <ion-grid
+                    *ngIf="ordersDetailsList && ordersDetailsList.length > 0 && ordersDetailsList[0].status == 'P'">
                     <ion-row class="ion-align-items-center">
                         <ion-col size="12" class="ion-text-center">
                             <ion-button shape="round" (click)="cancelOrder()">

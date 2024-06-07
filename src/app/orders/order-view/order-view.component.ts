@@ -17,6 +17,7 @@ export class OrderViewComponent implements OnInit {
   orderId;
   ordersDetailsList = [];
   mobileNumber;
+  searchHistoryDetails = null;
 
   constructor(private utilitiesService: UtilitiesService, private apiService: APIService, private modalController: ModalController,
     private activatedRoute: ActivatedRoute, private screenshot: Screenshot, private socialSharing: SocialSharing, private alertController: AlertController) { }
@@ -41,8 +42,22 @@ export class OrderViewComponent implements OnInit {
       this.utilitiesService.dismissLoading();
       if (response && response.data) {
         this.ordersDetailsList = response.data;
+        if (this.ordersDetailsList && this.ordersDetailsList.length > 0) {
+          this.getSearchHistory(this.ordersDetailsList[0]["last_searched_id"]);
+        }
       } else {
         this.utilitiesService.presentErrorAlert();
+      }
+    }, () => this.utilitiesService.dismissLoading());
+  }
+
+  getSearchHistory(historyId) {
+    this.apiService.get('API_status/get_search_history?id=' + historyId).subscribe((response: any) => {
+      this.utilitiesService.dismissLoading();
+      if (response && response.data) {
+        this.searchHistoryDetails = response.data;
+      } else {
+        this.searchHistoryDetails = null;
       }
     }, () => this.utilitiesService.dismissLoading());
   }

@@ -12,6 +12,10 @@
             <ion-button color="light" (click)="shareScreenshot()">
                 <ion-icon slot="end" name="share-social-outline"></ion-icon>
             </ion-button>
+            <ion-button *ngIf="utilitiesService.cart.length" color="light" (click)="goToCart()">
+                <ion-icon slot="end" name="cart"></ion-icon>
+                <ion-badge slot="start" class="cart-badge">{{utilitiesService.cart.length}}</ion-badge>
+            </ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
@@ -19,12 +23,23 @@
 <ion-content [fullscreen]="true">
     <ion-card *ngIf="loadPage">
         <ion-card-header>
-            <ion-card-title color="primary" class="ion-text-center">Find Nearest Sizes<br><span
-                    style="color: black;    font-size: 16px;">(in Inch)</span></ion-card-title>
+            <ion-card-title color="primary" class="ion-text-center">Find Nearest Sizes</ion-card-title>
         </ion-card-header>
 
         <ion-card-content style="padding : 0;">
             <ion-grid>
+                <ion-row>
+                    <ion-col size="12">
+                        <div id="radio-inputs">
+                            <input type="radio" id="html" name="fav_language" class="radio-input" value="Inch"
+                                [(ngModel)]="searchSizeBy" [attr.disabled]="utilitiesService.cart.length || null">
+                            <label for="html" class="ion-margin-end">Size in Inches</label><br>
+                            <input type="radio" id="css" name="fav_language" class="radio-input" value="CMS"
+                                [(ngModel)]="searchSizeBy" [attr.disabled]="utilitiesService.cart.length || null">
+                            <label for="css">Size in CMS</label><br>
+                        </div>
+                    </ion-col>
+                </ion-row>
                 <ion-row>
                     <ion-col size="12">
                         <ion-item>
@@ -55,10 +70,16 @@
                     </ion-col>
                 </ion-row>
                 <ion-row>
-                    <ion-col size="4" offset="4">
+                    <ion-col size="5">
                         <ion-item>
                             <ion-label position="stacked" class="font1">GSM</ion-label>
                             <ion-input type="number" [(ngModel)]="gsm" inputmode="decimal" maxlength="10"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col size="5" offset="2">
+                        <ion-item>
+                            <ion-label position="stacked" class="font1">QTY</ion-label>
+                            <ion-input type="number" [(ngModel)]="qty" maxlength="10"></ion-input>
                         </ion-item>
                     </ion-col>
                 </ion-row>
@@ -81,8 +102,10 @@
                     </div>
 
                     <ng-container *ngIf="searchResult.length > 0">
-                        <ion-label class="font1 ion-text-center w100 table-header ion-margin-top">READY SHEET
-                            SIZES</ion-label>
+                        <ion-label class="font1 ion-text-center w100 table-header ion-margin-top">
+                            <ion-img src='assets/icon/paper-bundle.png'></ion-img>
+                            READY SHEET SIZES
+                            <ion-img src='assets/icon/paper-bundle.png'></ion-img></ion-label>
                         <div style="overflow-x:auto;">
 
                             <table style="border-collapse: collapse;">
@@ -95,23 +118,28 @@
                                     </th>
                                     <th class="greyBG">#</th>
                                 </tr>
-                                <tr *ngFor="let res of searchResult">
-                                    <td *ngFor="let key of headersKeys">
-                                        {{ res[key]}}
-                                    </td>
-                                    <td>
-                                        <div class="primaryBG orderBtn" (click)="orderNow(res)">
-                                            <ion-icon name="cart-outline"></ion-icon>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <ng-container *ngFor="let res of searchResult">
+                                    <tr *ngIf="!isItemPresentInCart(res)">
+                                        <td *ngFor="let key of headersKeys">
+                                            {{ res[key]}}
+                                        </td>
+                                        <td>
+                                            <div class="primaryBG orderBtn" (click)="getStockDetail(res, false)">
+                                                <ion-icon name="cart-outline"></ion-icon>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
                             </table>
                         </div>
                     </ng-container>
 
-                    <ng-container *ngIf="reel_searchResult.length > 0 && reel_headers">
-                        <ion-label class="font1 ion-text-center w100 table-header ion-margin-top">REEL TO SHEET SIZES
-                            CONVERSION </ion-label>
+                    <ng-container
+                        *ngIf="reel_search_threshold <= wgtsheet && reel_searchResult.length > 0 && reel_headers">
+                        <ion-label class="font1 ion-text-center w100 table-header ion-margin-top">
+                            <ion-img src='assets/icon/paper-reel.png'></ion-img>
+                            REEL TO SHEET SIZES CONVERSION
+                            <ion-img src='assets/icon/paper-reel.png'></ion-img> </ion-label>
                         <div style="overflow-x:auto;">
 
                             <table style="border-collapse: collapse;">
@@ -130,7 +158,7 @@
                                         {{ res[key]}}
                                     </td>
                                     <td>
-                                        <div class="primaryBG orderBtn" (click)="orderReelNow(res)">
+                                        <div class="primaryBG orderBtn" (click)="getStockDetail(res, true)">
                                             <ion-icon name="cart-outline"></ion-icon>
                                         </div>
                                     </td>
@@ -172,4 +200,8 @@
 
         </ion-card-content>
     </ion-card>
+
+    <ion-button id="go-to-cart-button" *ngIf="utilitiesService.cart.length" shape="round" (click)="goToCart()">
+        <ion-icon name="cart"></ion-icon> Go To Cart ({{utilitiesService.cart.length}})
+    </ion-button>
 </ion-content>

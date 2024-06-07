@@ -1,0 +1,128 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-toggle>
+                <ion-button>
+                    <ion-icon slot="icon-only" name="menu"></ion-icon>
+                </ion-button>
+            </ion-menu-toggle>
+        </ion-buttons>
+        <ion-title start>{{visibleContent == 'details' ? 'Order Details' : 'Place New Order' }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-card *ngIf="cart?.length">
+        <ion-card-header (click)="visibleContent = 'details'">
+            <ion-card-title color="primary">Order Details <ion-icon
+                    [attr.name]="visibleContent == 'details' ? 'chevron-down-outline' : 'chevron-forward-outline'"
+                    class="ion-float-right"></ion-icon></ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content class="ion-no-padding" *ngIf="visibleContent == 'details'">
+
+            <table id="cart-table" style="border-collapse: collapse;">
+                <tr>
+                    <th class="greyBG small">#</th>
+                    <th class="greyBG">Group</th>
+                    <th class="greyBG">Quality</th>
+                    <th *ngIf="searchSizeBy != 'CMS'" class="greyBG">Size In Inch</th>
+                    <th *ngIf="searchSizeBy == 'CMS'" class="greyBG">Size In CMS</th>
+                    <th class="greyBG">GSM</th>
+                    <th class="greyBG">QTY</th>
+                    <th class="greyBG">Qty as per your size</th>
+                    <th class="greyBG small">#</th>
+                </tr>
+                <tr *ngFor="let cartItem of cart; let index=index;">
+                    <td>{{index + 1}}</td>
+                    <td>{{cartItem?.searchedWith?.product_group}}</td>
+                    <td>{{cartItem.quality}}</td>
+                    <td *ngIf="cartItem.searchSizeBy != 'CMS'">{{cartItem.length}} X {{cartItem.width}}</td>
+                    <td *ngIf="cartItem.searchSizeBy == 'CMS'">{{cartItem.size_cms_length}} X
+                        {{cartItem.size_cms_width}}</td>
+                    <td>{{cartItem?.searchedWith?.gsm}}</td>
+
+                    <ng-container *ngIf="cartItem.isReel !='Yes'">
+                        <td><ion-select [(ngModel)]=" cartItem.selectedSize">
+                                <ion-select-option *ngFor="let size of cartItem?.searchedResult?.qty_as_per_size"
+                                    [value]="size">{{size}}</ion-select-option>
+                            </ion-select>
+                        </td>
+                        <td class="qty-selected">
+                            {{cartItem.selectedSize ? cartItem.selectedSize * cartItem.searchedResult.total_ups : "-"}}
+                        </td>
+                    </ng-container>
+                    <ng-container *ngIf="cartItem.isReel == 'Yes'">
+                        <td>{{cartItem?.searchedWith?.qty}}</td>
+                        <td class="qty-selected">{{cartItem?.searchedWith?.qty}}</td>
+                    </ng-container>
+                    <td>
+                        <div class="primaryBG orderBtn" (click)="removeFromCart(index)">
+                            <ion-icon name="trash"></ion-icon>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="greyBG" colspan="5">Total</th>
+                    <th class="greyBG">{{qtyTotal}}</th>
+                    <th class="greyBG qty-selected">{{qtyAsPerYourSizeTotal}}</th>
+                    <th class="greyBG"></th>
+            </table>
+
+
+            <ion-grid class="ion-padding-top w100">
+                <ion-row class="ion-align-items-right w100">
+                </ion-row>
+            </ion-grid>
+
+            <ion-grid class="ion-padding-top">
+                <ion-row class="ion-align-items-center">
+                    <ion-col size="6" class="ion-text-center">
+                        <ion-button expand="block" fill="outline" (click)="goBack()">Add More Sizes</ion-button>
+                    </ion-col>
+                    <ion-col size="6" class="ion-text-center">
+                        <ion-button expand="block" color="primary" (click)="goToOrder()"> Proceed to
+                            order</ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+
+    </ion-card>
+    <ion-card>
+        <ion-card-header (click)="onPlaceOrderHeaderClick()">
+            <ion-card-title color="primary">Place New Order <ion-icon
+                    [attr.name]="visibleContent == 'place_order' ? 'chevron-down-outline' : 'chevron-forward-outline'"
+                    class="ion-float-right"></ion-icon></ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content *ngIf="visibleContent == 'place_order'">
+            <ion-label>Company Name <span class="dangerColor font1-2">*</span></ion-label>
+            <ion-item>
+                <ion-select placeholder="Select Company" [(ngModel)]="companyName">
+                    <ion-select-option *ngFor="let company of companyList"
+                        [value]="company.id">{{company.company_name}}</ion-select-option>
+                </ion-select>
+            </ion-item>
+
+            <p class="ion-padding-top w100 floatL"></p>
+
+            <ion-label>Delivery at</ion-label>
+            <ion-item>
+                <ion-input maxlength="100" [(ngModel)]="delivery"></ion-input>
+            </ion-item>
+
+            <ion-grid class="ion-padding-top">
+                <ion-row class="ion-align-items-center">
+                    <ion-col size="6" class="ion-text-center">
+                        <ion-button expand="block" fill="outline" (click)="resetForm()">Reset</ion-button>
+                    </ion-col>
+                    <ion-col size="6" class="ion-text-center">
+                        <ion-button expand="block" color="primary" (click)="submitOrder()"> Submit </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+
+        </ion-card-content>
+    </ion-card>
+</ion-content>

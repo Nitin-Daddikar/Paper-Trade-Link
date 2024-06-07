@@ -8,6 +8,7 @@ import { UtilitiesService } from './utilities.services';
 export class APIService {
 
   apiUrl = 'http://papertradelink.com/apis/';
+  // apiUrl = 'http://test.papertradelink.com/apis/';
 
   constructor(private httpClient: HttpClient) {
   }

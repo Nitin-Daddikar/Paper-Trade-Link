@@ -5,7 +5,7 @@ workflows:
       app_store_connect: codemagic
     environment:
       ios_signing:
-        distribution_type: development
+        distribution_type: app_store
         bundle_identifier: com.papertradelink
       xcode: 15.0
       node: v14.21.3

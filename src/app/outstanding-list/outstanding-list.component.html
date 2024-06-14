@@ -48,7 +48,7 @@
                                     <td>{{os.credit_days}}</td>
                                     <td>{{os.due_date}}</td>
                                     <td>{{os.days * -1}}</td>
-                                    <td>{{os.balance}}</td>
+                                    <td>{{os.balance | number: '1.0-0'}}</td>
                                 </tr>
                                 <tr>
                                     <th></th>
@@ -57,7 +57,7 @@
                                     <th></th>
                                     <th>Total</th>
                                     <th></th>
-                                    <th>{{company.total}}</th>
+                                    <th>{{company.total | number: '1.0-0'}}</th>
                                 </tr>
                             </table>
                         </div>
@@ -76,9 +76,9 @@
                         </tr>
                         <tr *ngFor="let summar of company.summary">
                             <td>{{summar.Month}}</td>
-                            <td style="color:red">{{summar.Due}}</td>
-                            <td style="color:green">{{summar.Notdue}}</td>
-                            <td>{{summar.Total_summ}}</td>
+                            <td style="color:red">{{summar.Due | number: '1.0-0'}}</td>
+                            <td style="color:green">{{summar.Notdue | number: '1.0-0'}}</td>
+                            <td>{{summar.Total_summ | number: '1.0-0'}}</td>
                         </tr>
                     </table>
 

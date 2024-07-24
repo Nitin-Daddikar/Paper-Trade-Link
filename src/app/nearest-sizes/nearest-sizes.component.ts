@@ -275,13 +275,7 @@ export class NearestSizesComponent implements OnInit {
   }
 
   shareScreenshot() {
-    this.screenshot.URI(80).then((uri) => {
-      this.socialSharing.share('', '', uri.URI);
-    }, (e) => {
-      if (e == 20) {
-        this.utilitiesService.presentErrorAlert('Error', 'Please allow storage permission from settings to share screenshot.');
-      }
-    });
+    this.utilitiesService.shareScreenshot();
   }
 
   millisToMinutesAndSeconds(millis) {

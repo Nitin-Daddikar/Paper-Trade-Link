@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Network } from '@ionic-native/network/ngx';
 import { ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { Subject } from 'rxjs';
+import { Screenshot } from '@ionic-native/screenshot/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import html2canvas from 'html2canvas';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +28,7 @@ export class UtilitiesService {
   updateURL = "";
 
   constructor(private network: Network, private toastCtrl: ToastController, private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController) { }
+    private loadingCtrl: LoadingController, private screenshot: Screenshot, private socialSharing: SocialSharing) { }
 
   setLabels(labels) {
     this.labels = labels;
@@ -142,6 +145,23 @@ export class UtilitiesService {
       return false;
     }
     return true;
+  }
+
+  shareScreenshot() {
+    this.shareScreenshotImg();
+  }
+
+  async shareScreenshotImg() {
+    try {
+      this.showLoading();
+      const canvas = await html2canvas(document.body);
+      const screenshotURI = canvas.toDataURL('image/png');
+      this.dismissLoading();
+      this.socialSharing.share('', '', screenshotURI);
+    } catch(e) {
+      this.dismissLoading();
+      this.presentErrorAlert();
+    }
   }
 
 }

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilitiesService } from '../../services/utilities.services';
 import { APIService } from '../../services/api.services';
-import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { Screenshot } from '@ionic-native/screenshot/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-order-status-view',
@@ -16,15 +16,35 @@ export class OrderStatusViewComponent implements OnInit {
   orderId;
   ordersDetailsList = [];
   mobileNumber;
+  showDownloadInvoiceOption = null;
+  showDownloadChallanOption = null;
 
-  constructor(private utilitiesService: UtilitiesService, private apiService: APIService,
-    private activatedRoute: ActivatedRoute, private screenshot: Screenshot, private socialSharing: SocialSharing) { }
+  constructor(private utilitiesService: UtilitiesService, private apiService: APIService, private iab: InAppBrowser,
+              private activatedRoute: ActivatedRoute, private screenshot: Screenshot, private socialSharing: SocialSharing) { }
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
       this.orderId = params.get('orderId');
       this.getActionCallNumber();
+      this.getOptions();
     });
+  }
+
+  getOptions() {
+    this.showDownloadInvoiceOption = null;
+    this.apiService.get('API_status/option_masters').subscribe((res: any) => {
+      const options = res.data;
+      if (options) {
+        options.forEach(option => {
+          if (option.option == 'show_download_invoice_button' && option.value && option.value.trim().toLowerCase() == 'yes') {
+            this.showDownloadInvoiceOption = option.value;
+          }
+          if (option.option == 'show_download_challan_copy_button' && option.value && option.value.trim().toLowerCase() == 'yes') {
+            this.showDownloadChallanOption = option.value;
+          }
+        });
+      }
+    }, () => {});
   }
 
   getActionCallNumber() {
@@ -57,5 +77,17 @@ export class OrderStatusViewComponent implements OnInit {
         this.utilitiesService.presentErrorAlert('Error', 'Please allow storage permission from settings to share screenshot.');
       }
     });
+  }
+
+  downloadPdf(url) {
+    this.iab.create(url, '_system', 'location=yes');
+  }
+
+  isShowChallanCopy() {
+    return this.showDownloadChallanOption && this.ordersDetailsList && this.ordersDetailsList.length > 0 && this.ordersDetailsList[0].pdf_url
+  }
+
+  isShowInvoice() {
+    return this.showDownloadInvoiceOption && this.ordersDetailsList && this.ordersDetailsList.length > 0 && this.ordersDetailsList[0].pdf_invoice
   }
 }

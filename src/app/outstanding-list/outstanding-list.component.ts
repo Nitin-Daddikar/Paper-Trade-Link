@@ -3,7 +3,8 @@ import { UtilitiesService } from '../services/utilities.services';
 import { APIService } from '../services/api.services';
 import { AuthService } from '../services/auth.service';
 import { Screenshot } from '@ionic-native/screenshot/ngx';
-import { SocialSharing } from '@ionic-native/social-sharing/ngx'
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-outstanding-list',
@@ -13,12 +14,28 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx'
 export class OutstandingListComponent implements OnInit {
 
   companyResult = null;
+  showDownloadOption = null;
 
-  constructor(private utilitiesService: UtilitiesService, private apiService: APIService,
-    private authService: AuthService, private screenshot: Screenshot, private socialSharing: SocialSharing) { }
+  constructor(private utilitiesService: UtilitiesService, private apiService: APIService, private iab: InAppBrowser,
+              private authService: AuthService, private screenshot: Screenshot, private socialSharing: SocialSharing) { }
 
   ngOnInit() {
     this.getDetails();
+    this.getOptions();
+  }
+
+  getOptions() {
+    this.showDownloadOption = null;
+    this.apiService.get('API_status/option_masters').subscribe((res: any) => {
+      const options = res.data;
+      if (options) {
+        options.forEach(option => {
+          if (option.option == 'show_download_invoice_button' && option.value && option.value.trim().toLowerCase() == 'yes') {
+            this.showDownloadOption = option.value;
+          }
+        });
+      }
+    }, () => {});
   }
 
   getDetails(event = null) {
@@ -62,5 +79,9 @@ export class OutstandingListComponent implements OnInit {
         this.utilitiesService.presentErrorAlert('Error', 'Please allow storage permission from settings to share screenshot.');
       }
     });
+  }
+
+  downloadPdf(url) {
+    this.iab.create(url, '_system', 'location=yes');
   }
 }

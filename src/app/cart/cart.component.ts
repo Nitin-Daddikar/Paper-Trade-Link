@@ -107,7 +107,7 @@ export class CartComponent implements OnInit {
           formData.append('qual', cartItem.quality);
           formData.append('gsm', cartItem.gsm);
           if (cartItem.isReel == 'Yes') {
-            formData.append('qty', cartItem.searchedWith.qty);
+            formData.append('qty', (+cartItem.searchedWith.qty / +cartItem.searchedResult.total_ups).toFixed(0));
           } else {
             formData.append('qty', cartItem.selectedSize);
           }
@@ -167,11 +167,15 @@ export class CartComponent implements OnInit {
     this.location.back();
   }
 
+  getReelTotal(cartItem) {
+    return (+cartItem.searchedWith.qty / +cartItem.searchedResult.total_ups).toFixed(0);
+  }
+
   get qtyTotal() {
     let total = 0;
     this.utilitiesService.cart.forEach(cartItem => {
       if (cartItem.isReel == 'Yes') {
-        total += +cartItem.searchedWith.qty;
+        total += +(+cartItem.searchedWith.qty / +cartItem.searchedResult.total_ups).toFixed(0);
       } else {
         total += +cartItem.selectedSize;
       }

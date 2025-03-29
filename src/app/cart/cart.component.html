@@ -40,7 +40,7 @@
                     <td *ngIf="cartItem.searchSizeBy != 'CMS'">{{cartItem.length}} X {{cartItem.width}}</td>
                     <td *ngIf="cartItem.searchSizeBy == 'CMS'">{{cartItem.size_cms_length}} X
                         {{cartItem.size_cms_width}}</td>
-                    <td>{{cartItem?.searchedWith?.gsm}}</td>
+                    <td>{{cartItem?.gsm}}</td>
 
                     <ng-container *ngIf="cartItem.isReel !='Yes'">
                         <td><ion-select [(ngModel)]=" cartItem.selectedSize">
@@ -53,7 +53,7 @@
                         </td>
                     </ng-container>
                     <ng-container *ngIf="cartItem.isReel == 'Yes'">
-                        <td>{{cartItem?.searchedWith?.qty}}</td>
+                        <td>{{getReelTotal(cartItem)}}</td>
                         <td class="qty-selected">{{cartItem?.searchedWith?.qty}}</td>
                     </ng-container>
                     <td>

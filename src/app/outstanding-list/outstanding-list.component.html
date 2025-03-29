@@ -40,6 +40,7 @@
                                     <th style="min-width: 5.5rem;">Due<br>Date</th>
                                     <th style="min-width: 4rem;">Over<br>Due</th>
                                     <th style="min-width: 5.5rem;">Amount</th>
+                                    <th *ngIf="showDownloadOption" style="min-width: 5.5rem;">Download<br>Invoice</th>
                                 </tr>
                                 <tr *ngFor="let os of company.oustanding" [ngStyle]="{'color' : os.red == 'YES' ? 'red' : 'green'}">
                                     <td>{{os.Date_chall}}</td>
@@ -49,6 +50,7 @@
                                     <td>{{os.due_date}}</td>
                                     <td>{{os.days * -1}}</td>
                                     <td>{{os.balance | number: '1.0-0'}}</td>
+                                    <td *ngIf="showDownloadOption"><ion-icon *ngIf="os.pdf_url" slot="end" name="cloud-download-outline" class="font1-2" (click)="downloadPdf(os.pdf_url)"></ion-icon></td>
                                 </tr>
                                 <tr>
                                     <th></th>

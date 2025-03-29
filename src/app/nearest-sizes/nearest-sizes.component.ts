@@ -216,6 +216,9 @@ export class NearestSizesComponent implements OnInit {
           this.utilitiesService.dismissLoading();
           if (res.total_sheet < (this.qty / res.total_ups)) {
             this.showLessQtyAlert(this.qty - (res.total_sheet * res.total_ups), res.total_sheet, res.total_ups);
+            if (!isReel) {
+              res.qty_as_per_size = [res.qty_as_per_size[res.qty_as_per_size.length - 1]];
+            }
           }
           if (response && response.data) {
             const stockDetail = response.data;

@@ -7,6 +7,7 @@ import { UtilitiesService } from './utilities.services';
 })
 export class APIService {
 
+  // apiUrl = 'http://127.0.0.1:8000/apis/';
   apiUrl = 'https://papertradelink.com/apis/';
   // apiUrl = 'http://test.papertradelink.com/apis/';
 

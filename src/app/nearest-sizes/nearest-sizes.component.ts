@@ -72,7 +72,8 @@ export class NearestSizesComponent implements OnInit {
 
   loadMasters() {
     this.listProducts = [];
-    this.apiService.get('API_search/getMasters')
+    const mobileNumber = this.authService.getMobileNumber;
+    this.apiService.get('API_search/getMasters?mobile=' + mobileNumber)
       .subscribe((response: any) => {
         if (response && response.data) {
           this.listProducts = response.data.product_group;

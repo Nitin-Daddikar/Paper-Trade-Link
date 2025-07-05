@@ -7,7 +7,7 @@ workflows:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.papertradelink
-      xcode: 15.0
+      xcode: 16.0
       node: v14.21.3
       npm: 6
     cache:

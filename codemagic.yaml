@@ -8,8 +8,6 @@ workflows:
         distribution_type: app_store
         bundle_identifier: com.papertradelink
       xcode: 16.0
-      node: v16.13.0
-      npm: 6
     cache:
       cache_paths:
         - $CM_BUILD_DIR/node_modules

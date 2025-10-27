@@ -15,7 +15,7 @@
 
 <ion-header>
     <ion-toolbar color="primary">
-        <ion-title class="headerFont fontSB pr-0 pl-0 ion-text-center">Update Qunatity</ion-title>
+        <ion-title class="headerFont fontSB pr-0 pl-0 ion-text-center">Update Order</ion-title>
         <ion-buttons slot="end">
             <ion-icon slot="icon-only" name="close" (click)="closeModal(true)"></ion-icon>
         </ion-buttons>
@@ -25,9 +25,15 @@
 
 <ion-content id="task-filter-content">
     <div class="ion-float-left ion-padding w100">
-        <ion-label>Enter Qunatity <span class="dangerColor font1-2">*</span></ion-label>
+        <ion-label>Enter Quantity <span class="dangerColor font1-2">*</span></ion-label>
         <ion-item>
-            <ion-input type="number" [(ngModel)]="quantity" placeholder="Enter Qunatity" maxlength="10"></ion-input>
+            <ion-input type="number" [(ngModel)]="quantity" placeholder="Enter Quantity" maxlength="10"></ion-input>
+        </ion-item>
+    </div>
+    <div class="ion-float-left ion-padding w100">
+        <ion-label>Enter Delivery At <span class="dangerColor font1-2">*</span></ion-label>
+        <ion-item>
+            <ion-input type="text" [(ngModel)]="delivery_at" placeholder="Enter Delivery At" maxlength="100"></ion-input>
         </ion-item>
     </div>
 

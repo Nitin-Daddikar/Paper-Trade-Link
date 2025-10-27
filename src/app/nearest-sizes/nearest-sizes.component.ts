@@ -48,6 +48,9 @@ export class NearestSizesComponent implements OnInit {
 
   stock_access = null;
 
+  isHeaderKeyHasEta = false;
+  isReelHeaderKeyHasEta = false;
+
   constructor(public utilitiesService: UtilitiesService, private apiService: APIService, private activatedRoute: ActivatedRoute, private socialSharing: SocialSharing,
     private authService: AuthService, private cdr: ChangeDetectorRef, private router: Router, private screenshot: Screenshot, private alertCtrl: AlertController) { }
 
@@ -111,6 +114,8 @@ export class NearestSizesComponent implements OnInit {
 
           var date = new Date();
           let startSeconds = date.valueOf();
+          this.isHeaderKeyHasEta = false;
+          this.isReelHeaderKeyHasEta = false;
           this.apiService.post('API_search/search_dynamic_column_wise', formData)
             .subscribe((data: any) => {
               if (!_.isEmpty(data) && !_.isEmpty(data.data)) {
@@ -126,6 +131,9 @@ export class NearestSizesComponent implements OnInit {
                   this.searchResult = data.data.list;
                   this.searchResult.map(company => {
                     this.headersKeys.forEach(element => {
+                      if (element.toLowerCase() == 'eta') {
+                        this.isHeaderKeyHasEta = true;
+                      }
                       company[element] = '' + company[element];
                     });
                   })
@@ -144,6 +152,9 @@ export class NearestSizesComponent implements OnInit {
                   this.reel_searchResult = data.data.reel_list;
                   this.reel_searchResult.map(company => {
                     this.reel_headersKeys.forEach(element => {
+                      if (element.toLowerCase() == 'eta') {
+                        this.isReelHeaderKeyHasEta = true;
+                      }
                       company[element] = '' + company[element];
                     });
                   })

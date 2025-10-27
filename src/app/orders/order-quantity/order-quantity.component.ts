@@ -15,12 +15,14 @@ export class OrderQuantityComponent implements OnInit {
     @Input() orderDetails: any = {};
 
     quantity = 0;
+    delivery_at = '';
 
     constructor(private modalCtrl: ModalController, private apiService: APIService, private utilitiesService: UtilitiesService) {
     }
 
     ngOnInit() {
         this.quantity = this.orderDetails.qty;
+        this.delivery_at = this.orderDetails.delivery_at;
     }
 
     closeModal(close = false) {
@@ -31,10 +33,11 @@ export class OrderQuantityComponent implements OnInit {
             return;
         }
 
-        if (this.quantity) {
+        if (this.quantity && this.delivery_at) {
             const formData = new FormData();
             formData.append('order_id', this.orderDetails.id);
             formData.append('quantity', this.quantity + '');
+            formData.append('delivery_at', this.delivery_at + '');
 
             this.apiService.post('API_addorder/update_quantity', formData).subscribe((res: any) => {
                 this.utilitiesService.dismissLoading();
@@ -44,7 +47,7 @@ export class OrderQuantityComponent implements OnInit {
                         data: this.orderDetails
                     });
                 } else {
-                    this.utilitiesService.presentErrorAlert('Update quantity failed', ' ');
+                    this.utilitiesService.presentErrorAlert('Update order failed', ' ');
                 }
             }, () => {
                 this.utilitiesService.dismissLoading();

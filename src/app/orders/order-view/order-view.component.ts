@@ -81,7 +81,7 @@ export class OrderViewComponent implements OnInit {
 
     modal.onDidDismiss().then(res => {
       if (res.data && res.data.data) {
-        this.utilitiesService.presentErrorAlert('Quantity changed successfully !', ' ');
+        this.utilitiesService.presentErrorAlert('Order changed successfully !', ' ');
         this.getOrderDetail();
       }
     });

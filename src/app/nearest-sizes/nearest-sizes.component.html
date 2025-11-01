@@ -119,7 +119,8 @@
                                     <th class="greyBG">#</th>
                                 </tr>
                                 <ng-container *ngFor="let res of searchResult">
-                                    <tr [ngStyle]="{'background': isHeaderKeyHasEta && res['eta'] !== 'Available' && res['eta'] != '' ? 'yellow' : ''}" *ngIf="!isItemPresentInCart(res)">
+                                    <tr [ngStyle]="{'background': isHeaderKeyHasEta && res['eta'] !== 'Available' && res['eta'] != '' ? 'yellow' : ''}"
+                                        *ngIf="!isItemPresentInCart(res)">
                                         <td *ngFor="let key of headersKeys">
                                             {{ res[key]}}
                                         </td>
@@ -153,8 +154,9 @@
                                     </th>
                                     <th class="greyBG">#</th>
                                 </tr>
-                                <tr *ngFor="let res of reel_searchResult">
-                                    <td [ngStyle]="{'background': isReelHeaderKeyHasEta && res['eta'] !== 'Available' && res['eta'] != '' ? 'yellow' : ''}" *ngFor="let key of reel_headersKeys">
+                                <tr *ngFor="let res of reel_searchResult"
+                                    [ngStyle]="{'background': isReelHeaderKeyHasEta && res['eta'] !== 'Available' && res['eta'] != '' ? 'yellow' : ''}">
+                                    <td *ngFor="let key of reel_headersKeys">
                                         {{ res[key]}}
                                     </td>
                                     <td>

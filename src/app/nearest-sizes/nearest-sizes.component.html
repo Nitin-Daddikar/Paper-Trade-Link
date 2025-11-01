@@ -121,9 +121,19 @@
                                 <ng-container *ngFor="let res of searchResult">
                                     <tr [ngStyle]="{'background': isHeaderKeyHasEta && res['eta'] !== 'Available' && res['eta'] != '' ? 'yellow' : ''}"
                                         *ngIf="!isItemPresentInCart(res)">
-                                        <td *ngFor="let key of headersKeys">
-                                            {{ res[key]}}
-                                        </td>
+                                        <ng-container *ngFor="let key of headersKeys">
+                                            <ng-container *ngIf="key != 'eta' else etaCell">
+                                                <td>
+                                                    {{ res[key]}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-template #etaCell>
+                                                <td
+                                                    [ngStyle]="{'color': res[key] === 'Available' ? 'green' : 'red', 'font-weight': 'bold'}">
+                                                    {{ res[key]}}
+                                                </td>
+                                            </ng-template>
+                                        </ng-container>
                                         <td>
                                             <div class="primaryBG orderBtn" (click)="getStockDetail(res, false)">
                                                 <ion-icon name="cart-outline"></ion-icon>
@@ -156,9 +166,19 @@
                                 </tr>
                                 <tr *ngFor="let res of reel_searchResult"
                                     [ngStyle]="{'background': isReelHeaderKeyHasEta && res['eta'] !== 'Available' && res['eta'] != '' ? 'yellow' : ''}">
-                                    <td *ngFor="let key of reel_headersKeys">
-                                        {{ res[key]}}
-                                    </td>
+                                    <ng-container *ngFor="let key of reel_headersKeys">
+                                        <ng-container *ngIf="key != 'eta' else etaReelCell">
+                                            <td>
+                                                {{ res[key]}}
+                                            </td>
+                                        </ng-container>
+                                        <ng-template #etaReelCell>
+                                            <td
+                                                [ngStyle]="{'color': res[key] === 'Available' ? 'green' : 'red', 'font-weight': 'bold'}">
+                                                {{ res[key]}}
+                                            </td>
+                                        </ng-template>
+                                    </ng-container>
                                     <td>
                                         <div class="primaryBG orderBtn" (click)="getStockDetail(res, true)">
                                             <ion-icon name="cart-outline"></ion-icon>
